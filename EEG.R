@@ -4,7 +4,7 @@
 # freq   =  frequencies of interest
 # interv = interval of intereset
 # res = Bands or Frequencies
-# tree1 = yesno : go back and insert interval
+# tree1 = yesno : go back and insert interval tyueyet
 
 library("colorspace")
 library("plyr")
@@ -291,7 +291,7 @@ ggplot(fmeans_eeg, aes(intervals_sec/60, Mean_PSD,  colour = drug_dose)) +
           legend.title = element_text(face = "bold", hjust = 0.5),
           legend.background = element_rect ( color = "grey20"),
           strip.text = element_text(size=8, face = "bold"), 
-          axis.text = element_text(size = 6, face = "bold"),
+          axis.text = element_text(size = 6, face = "bold")
           # plot.caption = element_text(vjust = 1), 
           # panel.grid.major = element_line(colour = "gray93"), 
           # panel.grid.minor = element_line(colour = "gray93"), 
