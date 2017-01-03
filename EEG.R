@@ -17,7 +17,9 @@ library("svDialogs")
 library("viridis")
 
 
-original <- read.csv( dlgOpen(title = "Select the csv file")$res, header = TRUE, sep = "," )
+filenam <- choose.files(caption = "Select the csv file")
+
+original <- read.csv( paste(filenam) , header = TRUE, sep = "," )
 
 
 eeg <- original
@@ -56,17 +58,27 @@ drug <- eeg$drug[1]
 
 injection_int <- as.numeric( eeg$injection_int[1] )*60
 baseline_int <- as.numeric( eeg$baseline[1] )*60
+ 
+# This does not work
+# d0 <- eeg$d0[1]
+# d1 <- eeg$d1[1]
+# dose_int <- eeg$doseinterval[1]
+# 
+# # This is to find the max number of decimal needed to report that is the decimals of the first dose
+# sd0 <- unlist(strsplit(as.character(d0), ""))
+# ndecimal <- as.numeric(length(sd0) - match(".", sd0 ))
+# # 
+# alldoses <-  round( 10^( seq(log10(d0), log10(d1), by = dose_int )), ndecimal)
 
-d0 <- eeg$d0[1]
-d1 <- eeg$d1[1]
-dose_int <- eeg$doseinterval[1]
+sd0 <- unlist(strsplit(as.character(basename(filenam)), "_"))
+sd0 <- sd0[ 2: length(sd0) ]
 
-# This is to find the max number of decimal needed to report that is the decimals of the first dose
-sd0 <- unlist(strsplit(as.character(d0), ""))
-ndecimal <- as.numeric(length(sd0) - match(".", sd0 ))
+#this remove the .csv from the last dose
+sd0 [length(sd0)] <- as.numeric( paste( unlist( strsplit(tail(sd0,1), "")) 
+                                        [1 : (length(unlist(strsplit(tail(sd0,1), ""))) - 4)], collapse = "") )
+alldoses <- as.numeric(sd0)
 
 
-alldoses <-  round( 10^( seq(log10(d0), log10(d1), by = dose_int )), ndecimal)
 
 # Every dose int we have a different dose but the first injection was given at baseline interval so:
 injection_time <- as.numeric( c( 0, baseline_int, baseline_int + seq_along(alldoses)* injection_int ) )
