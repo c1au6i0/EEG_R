@@ -49,7 +49,7 @@ subj <- eeg$subject[1]
 f_resol <- unique( eeg$frequency_eeg )[1]  #frequenciesolution
 f_max <- max( eeg$frequency_eeg )
 exp_type <- eeg$experiment[1]
-eeg_date <- strptime( eeg$date,  "%y%m%e" )[1]
+eeg_date <- eeg$date[1]
 drug <- eeg$drug[1]
 
 ###############################################
@@ -142,10 +142,12 @@ while ( !length(interv)  ||  is.na (interv)  || !is.wholenumber(injection_int/in
 # All the intervals have the same length. This is to avoid that
 # the last interval is just 10 sec
 
-eeg <-  eeg %>% 
-        filter( time_sec  <= floor(max(time_sec)/300)*300 )
-
 interv <- as.numeric(interv)
+
+eeg <- dplyr::filter( eeg, time_sec  <=  floor(max(time_sec)/interv)*interv)
+
+
+
 
 # Intervals used for the mean  -> mean_intervals
 
@@ -274,7 +276,9 @@ yseqbreaks <- seq(0, max(fmeans_eeg$Mean_PSD)+10, by = 5)
 
 
 # Size of the points changes depending on the number of intervals
-sp <- interv/100
+sp <- (max(eeg$time) / interv) / 24
+
+
 csp <-  sp + sp/3
 
 
@@ -334,4 +338,4 @@ write.csv(tabegg, file = paste(gtitle,".csv", sep = ""))
 
 msgBox(c("A point graph and a summary csv has been created in ",  wdir) )
 
-rm(list= ls())
+# rm(list= ls())
