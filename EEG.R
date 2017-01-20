@@ -16,6 +16,8 @@ library("scales")
 library("svDialogs")
 library("viridis")
 
+setwd(choose.dir(caption = "Select output folder"))    #set the directory
+
 
 filenam <- choose.files(caption = "Select the csv file")
 
@@ -276,7 +278,7 @@ yseqbreaks <- seq(0, max(fmeans_eeg$Mean_PSD)+10, by = 5)
 
 
 # Size of the points changes depending on the number of intervals
-sp <- (max(eeg$time) / interv) / 24
+sp <- (max(eeg$time) / interv) / 18
 
 
 csp <-  sp + sp/3
@@ -338,4 +340,4 @@ write.csv(tabegg, file = paste(gtitle,".csv", sep = ""))
 
 msgBox(c("A point graph and a summary csv has been created in ",  wdir) )
 
-# rm(list= ls())
+rm(list= ls())

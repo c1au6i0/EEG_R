@@ -1,18 +1,26 @@
 PackratFormat: 1.4
 PackratVersion: 0.4.8.9
-RVersion: 3.3.1
-Repos: CRAN=https://cran.rstudio.com/,
-    CRANextra=http://www.stats.ox.ac.uk/pub/RWin
+RVersion: 3.3.2
+Repos: BioCsoft=https://bioconductor.org/packages/3.2/bioc,
+    BioCann=https://bioconductor.org/packages/3.2/data/annotation,
+    BioCexp=https://bioconductor.org/packages/3.2/data/experiment,
+    BioCextra=https://bioconductor.org/packages/3.2/extra,
+    CRAN=https://cran.rstudio.com/,
+    CRANextra=https://www.stats.ox.ac.uk/pub/RWin
 
 Package: BH
 Source: CRAN
 Version: 1.62.0-1
-Hash: 14dfb3e8ffe20996118306ff4de1fab2
 
 Package: DBI
 Source: CRAN
 Version: 0.5-1
 Hash: 375869004db963f9915f2b8a49b4a718
+
+Package: MASS
+Source: CRAN
+Version: 7.3-45
+Hash: 0650d5701aa7e369e77c9e2c8e1dc913
 
 Package: R6
 Source: CRAN
@@ -52,20 +60,21 @@ Hash: 87165608ca8aeb0958835c3c5b52b6b7
 Package: dplyr
 Source: CRAN
 Version: 0.5.0
-Hash: 3dcd1c1192d66441a627252b535e5cc2
 Requires: BH, DBI, R6, Rcpp, assertthat, lazyeval, magrittr, tibble
+Hash: 6d929c182ead0ca179eeb65d9f307f2e
 
 Package: ggplot2
 Source: CRAN
 Version: 2.2.0
+Requires: MASS, digest, gtable, lazyeval, plyr, reshape2, scales,
+    tibble
 Hash: 78c14285e0c114542d051a09bd552472
-Requires: digest, gtable, lazyeval, plyr, reshape2, scales, tibble
 
 Package: gridExtra
 Source: CRAN
 Version: 2.2.1
-Hash: 8f54b57d4b0598ed5b27e0eafe86a670
 Requires: gtable
+Hash: 8f54b57d4b0598ed5b27e0eafe86a670
 
 Package: gtable
 Source: CRAN
@@ -90,8 +99,8 @@ Hash: bdc4d48c3135e8f3b399536ddf160df4
 Package: munsell
 Source: CRAN
 Version: 0.4.3
-Hash: f96d896947fcaf9b6d0074002e9f4f9d
 Requires: colorspace
+Hash: f96d896947fcaf9b6d0074002e9f4f9d
 
 Package: packrat
 Source: github
@@ -105,20 +114,20 @@ GithubSha1: 80f8184c637c6c3e2a8bb371924b8b07667a9db3
 Package: plyr
 Source: CRAN
 Version: 1.8.4
-Hash: fee2f470d73a85f4db7e89d771427e57
 Requires: Rcpp
+Hash: fee2f470d73a85f4db7e89d771427e57
 
 Package: reshape2
 Source: CRAN
 Version: 1.4.2
-Hash: fd2714b51cb380c30fec1687005587a2
 Requires: Rcpp, plyr, stringr
+Hash: fd2714b51cb380c30fec1687005587a2
 
 Package: scales
 Source: CRAN
 Version: 0.4.1
-Hash: cf658953d600d4736b058df1558df481
 Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
+Hash: cf658953d600d4736b058df1558df481
 
 Package: stringi
 Source: CRAN
@@ -128,14 +137,14 @@ Hash: 1ad6b1cc11d982ac233bf2fa2f7c9684
 Package: stringr
 Source: CRAN
 Version: 1.1.0
-Hash: 4d21d0063b37a17ea18eaec6acd29bf3
 Requires: magrittr, stringi
+Hash: 4d21d0063b37a17ea18eaec6acd29bf3
 
 Package: svDialogs
 Source: CRAN
 Version: 0.9-57
-Hash: 6e858de289050f4c8d116cccbf831f11
 Requires: svGUI
+Hash: 6e858de289050f4c8d116cccbf831f11
 
 Package: svGUI
 Source: CRAN
@@ -145,11 +154,11 @@ Hash: 69979a64ae6fb1dd995bf6c0ac497c25
 Package: tibble
 Source: CRAN
 Version: 1.2
-Hash: ee28ae66deec042f19aff6fa10f5f8d5
 Requires: Rcpp, assertthat, lazyeval
+Hash: ee28ae66deec042f19aff6fa10f5f8d5
 
 Package: viridis
 Source: CRAN
 Version: 0.3.4
-Hash: c98cc0ee11a389f397c38ddb3762880c
 Requires: ggplot2, gridExtra
+Hash: c98cc0ee11a389f397c38ddb3762880c
