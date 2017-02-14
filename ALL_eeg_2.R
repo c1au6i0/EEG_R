@@ -1,10 +1,5 @@
 # Script to average data created by Alessandro EEG python script
 #
-# Variables 
-# freq   =  frequencies of interest
-# interv = interval of intereset
-# res = Bands or Frequencies
-# tree1 = yesno : go back and insert interval tyueyet
 
 library("colorspace")
 library("plyr")
@@ -18,7 +13,7 @@ library("viridis")
 
 
 # cat("SELECT THE FOLDER THAT CONTAINS THE FILES")
-setwd(choose.dir(caption = "Select folder"))    #set the directory
+setwd( choose.dir(caption = "Select folder") )    #set the directory
 file <- list.files(include.dirs=FALSE)
 
 dirs <- basename(list.dirs())
@@ -43,8 +38,14 @@ for(x in file) {
   }
 }  
 
+
+msgBox( paste0(length (file), " files have been imported") ) 
   
 alleeg_original <- alleeg
+
+alleeg <- na.omit(alleeg)
+
+# alleeg <- alleeg_original 
 
 #*************************************************************************#
 # Change the name of some variables ---------------------------------------
@@ -136,10 +137,11 @@ fheatmap <- function (x) {
 }
 
 wdir <- getwd()
-msgBox(c("Heatmaps have been created in ",  wdir) ) 
+
   
 by(alleeg, alleeg$subject, fheatmap)  
 
+msgBox(c("Heatmaps have been created in ",  wdir) ) 
 
 attach(alleeg)
 
@@ -147,7 +149,6 @@ attach(alleeg)
 # Remove corrupted channel ------------------------------------------------
 #*************************************************************************#
 
-alleegoriginal <-alleeg
 
 write.csv(alleeg, file = "alleeg.csv")
 
@@ -248,22 +249,23 @@ insert_freq <- function(fb) {
 
 
 
+#**************************************************************************#
+# Fix some intervals and ask for bands and frequencies----------------------
+# this is to avoid that the last interval is just 10 sec or is only 1 subj
+#**************************************************************************#
 
-# All the intervals have the same length. This is to avoid that
-# the last interval is just 10 sec
+# max shared length of session...  
+maxtim <- min( by(alleeg, alleeg$subject, function(x) max(x$time_sec)) )
 
-  min(by(alleeg, alleeg$subject, function(x) max(x$time_sec)))
-
-alleeg <- dplyr::filter( alleeg, time_sec  <=  floor(max(time_sec)/interv)*interv)
+alleeg <- dplyr::filter( alleeg, time_sec  <=  floor(maxtim/interv)*interv)
 
 
 
 
-# Intervals used for the mean  -> mean_intervals
+# Intervals used for the mean  -> mean_intervals (+1 so it does not start from 0)
 
 alleeg[, "M_interval"] <- as.numeric(findInterval(alleeg$time_sec, 
                                                   as.numeric(seq(interv, max(alleeg$time_sec), interv), left.open = TRUE)) ) + 1
-
 
 
 
@@ -274,15 +276,21 @@ freq <- insert_freq(res)
 # Compute means of bands or frequencies--------------------------------------------#
 #**********************************************************************************#
 
-
 alleeg$M_interval <- alleeg$M_interval * interv
 
+allegg <- dplyr::filter( alleeg, frequency_eeg  <=  max(freq))
+
+names(alleeg)
+
+# set subtitle of the graph depending on the choice Bands/Frequencies and make the choice = symbol
 if (res == "Bands") {
   blab <-c("Delta", "Theta", "Alpha", "Beta", "Gamma")
-  freq<-as.numeric(c(0,freq))
+  freq <-as.numeric(c(0,freq))
   alleeg[, "Bands"] <- cut(alleeg$frequency_eeg,  freq, labels = blab, include.lowest = FALSE)
   sel <- as.symbol("Bands")
   subt2  <- res
+  #remove frequencies over upper limit of bands (not necessary is NA are omitted after means)
+  allegg <- dplyr::filter( alleeg, frequency_eeg  <=  max(freq))
 }
 
 if (res == "Frequencies") {
@@ -292,17 +300,32 @@ if (res == "Frequencies") {
 }
 
 
-fmeans_eeg <- alleeg %>%
-  group_by_(.dots = c(sel, "M_interval", "channel", "D_interval" )) %>%
+#Final-Subject-means-eeg
+fsmeans_eeg <- alleeg %>%
+  group_by_(.dots = c(sel, "M_interval", "channel", "D_interval", "subject" )) %>%
   dplyr::summarise(  Mean_PSD = mean(PSD), n = n(), SD = sd(PSD), Median_PSD = median(PSD))
 
-fmeans_eeg <- na.omit(fmeans_eeg)
-names(fmeans_eeg) [c(1,2,4)] <- c( paste(sel), "intervals_sec", "drug_dose" )
 
+
+fsmeans_eeg <- na.omit(fsmeans_eeg)
+
+
+#Final-means-eeg
+fmeans_eeg <- fsmeans_eeg  %>%
+  group_by_(.dots = c(sel, "M_interval", "channel", "D_interval")) %>%
+  dplyr::summarise(  Mean_PSD = mean( Mean_PSD ), n = n(), SD = sd(Mean_PSD), Median_PSD = median(Mean_PSD))
+
+names(fmeans_eeg) [c(1,2,4)] <- c( paste(sel), "intervals_sec", "drug_dose" )
+names(fsmeans_eeg) [c(1,2,4)] <- c( paste(sel), "intervals_sec", "drug_dose" )
+
+fmeans_eeg <- na.omit(fmeans_eeg)
 
 #**********************************************************************************#
 # Graph ---------------------------------------------------------------------------#
 #**********************************************************************************#
+
+gtitle <- "Methylphenidate"
+
 
 #limit x axis
 lx <- c(0 - min(fmeans_eeg$intervals_sec/60), max(fmeans_eeg$intervals_sec/60) + min(fmeans_eeg$intervals_sec/60))
@@ -314,7 +337,7 @@ yseqbreaks <- seq(0, max(fmeans_eeg$Mean_PSD)+10, by = 5)
 
 
 # Size of the points changes depending on the number of intervals
-sp <- (max(eeg$time) / interv) / 18
+sp <- (max(fmeans_eeg$intervals_sec) / interv) / 18
 
 
 csp <-  sp + sp/3
