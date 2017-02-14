@@ -19,17 +19,18 @@ library("viridis")
 
 # cat("SELECT THE FOLDER THAT CONTAINS THE FILES")
 setwd(choose.dir(caption = "Select folder"))    #set the directory
-file<-list.files(include.dirs=FALSE)
-# A[!A %in% B])
-dirs <- list.dirs()
+file <- list.files(include.dirs=FALSE)
+
+dirs <- basename(list.dirs())
 file <- file[!file %in% dirs]
-link <- file[grepl(paste ("*","lnk",sep=""), file )]
+link <- file[grepl(paste ("*","lnk", sep=""), file )]
 file <- file[!file %in% link]
 
 
 
-
+#*************************************************************************#
 # Loop to read all the files ----------------------------------------------
+#*************************************************************************#
 
 for(x in file) {
   eeg <- read.csv( x , header = TRUE, sep = "," )
@@ -45,13 +46,15 @@ for(x in file) {
   
 alleeg_original <- alleeg
 
+#*************************************************************************#
 # Change the name of some variables ---------------------------------------
+#*************************************************************************#
 
-#all names to low cases (Ale be consistent! all or nothing!)
+# all names to low cases (Ale be consistent! all or nothing!)
 
 names(alleeg)[ !names(alleeg) %in% c("PSD","Frequency") ] <- tolower( names(alleeg)[ !names(alleeg) %in% c("PSD","Frequency") ] )
 
-#remove Frequencies = 0
+# remove Frequencies = 0
 alleeg <- subset(alleeg, Frequency > 0)
 
 alleeg <- rename(alleeg, time_sec = time )
@@ -73,9 +76,9 @@ alleeg$route <- "iv"
 
 drug <- alleeg$drug[1]
 
-###############################################
-# Add a column with the dose of drug received #
-###############################################
+#*************************************************************************#
+# Add a column with the dose of drug received ----------------------------
+#*************************************************************************#
 
 injection_int <- as.numeric( alleeg$injection_int[1] )*60
 baseline_int <- as.numeric( alleeg$baseline[1] )*60
@@ -100,15 +103,17 @@ alleeg$D_interval[is.na(alleeg$D_interva)] <- max(alldoses)
 
 
 
-###########
-# A graph #
-###########
-subt <- 
-  paste0("doses = ", paste(round(alldoses, 3), collapse = ", "), " mg/kg given every ", injection_int/60, " min" )
+#*************************************************************************#
+# Heatmaps ----------------------------------------------------------------
+#*************************************************************************#
+
+subt <- paste0("doses = ", paste(round(alldoses, 3), collapse = ", "), 
+               " mg/kg given every ", injection_int/60, " min" )
   
 seqbreaks <- seq(0, max(alleeg$time_sec/60), by = injection_int/60)
 
-###function that creastes heatmap  
+# function that creates heatmap  
+
 fheatmap <- function (x) { 
   gtitle <- paste0( x$date[1]," ",  x$subject[1], " ", drug ) 
   grapheat <-
@@ -129,6 +134,7 @@ fheatmap <- function (x) {
 
   ggsave(filename = paste("heatmap ", gtitle, ".pdf", sep =""), plot = grapheat, device = "pdf",  width = 11, height = 8.5)
 }
+
 wdir <- getwd()
 msgBox(c("Heatmaps have been created in ",  wdir) ) 
   
@@ -137,30 +143,22 @@ by(alleeg, alleeg$subject, fheatmap)
 
 attach(alleeg)
 
-############################################################################
+#*************************************************************************#
 # Remove corrupted channel ------------------------------------------------
-
+#*************************************************************************#
 
 alleegoriginal <-alleeg
 
 write.csv(alleeg, file = "alleeg.csv")
 
-
+# Need to add interactive part
 
 alleeg <- alleeg  [-c( which( alleeg$subject == "RAT06" & alleeg$channel == "EEG_OR")),]
 
-##################################################################################
 
-
-
-
-
-
-
-
-#########################################################
-# Interactive section to choose time interval for means #
-#########################################################
+#*************************************************************************#
+# Interactive section to choose time interval for means  -----------------
+#*************************************************************************#
 
 is.wholenumber <-
   function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
@@ -182,9 +180,10 @@ while ( !length(interv)  ||  is.na (interv)  || !is.wholenumber(injection_int/in
 
 interv <- as.numeric(interv)
 
-#########################################################################
-# Interactive section to choose  between frequencies or bands for means #
-#########################################################################
+#*************************************************************************#
+# Interactive section to choose  between frequencies or bands for means ---
+#*************************************************************************#
+
 dlgMessage("Are you intrested in bands or particular frequencies?\n PRESS OK TO CHOOSE")$res
 
 bandfreq <-  c("Bands", "Frequencies")
@@ -199,12 +198,14 @@ while ( !length(res)) {
 
 
 
-###############################################################################
-# Function for Interactive session to indicate frequencies or bands for means #
-###############################################################################
+#**********************************************************************************#
+# Function for Interactive session to indicate frequencies or bands for means ----#
+#**********************************************************************************#
+
+# fb band of frequency
 
 
-insert_freq<- function(fb) {
+insert_freq <- function(fb) {
   
   banddef<-"4,8,13,30,50"
   fdef<-"10,20,30,40"
@@ -251,6 +252,7 @@ insert_freq<- function(fb) {
 # All the intervals have the same length. This is to avoid that
 # the last interval is just 10 sec
 
+  min(by(alleeg, alleeg$subject, function(x) max(x$time_sec)))
 
 alleeg <- dplyr::filter( alleeg, time_sec  <=  floor(max(time_sec)/interv)*interv)
 
@@ -268,9 +270,9 @@ alleeg[, "M_interval"] <- as.numeric(findInterval(alleeg$time_sec,
 
 freq <- insert_freq(res)
 
-#########################################
-# Compute means of bands or frequencies #
-#########################################
+#**********************************************************************************#
+# Compute means of bands or frequencies--------------------------------------------#
+#**********************************************************************************#
 
 
 alleeg$M_interval <- alleeg$M_interval * interv
@@ -298,9 +300,9 @@ fmeans_eeg <- na.omit(fmeans_eeg)
 names(fmeans_eeg) [c(1,2,4)] <- c( paste(sel), "intervals_sec", "drug_dose" )
 
 
-#########
-# Graph #
-#########
+#**********************************************************************************#
+# Graph ---------------------------------------------------------------------------#
+#**********************************************************************************#
 
 #limit x axis
 lx <- c(0 - min(fmeans_eeg$intervals_sec/60), max(fmeans_eeg$intervals_sec/60) + min(fmeans_eeg$intervals_sec/60))
@@ -352,9 +354,9 @@ mean_point <-
   )
 
 
-#######################
-# Save plot and means #
-#######################     
+#**********************************************************************************#
+# Save plot and means -------------------------------------------------------------#
+#**********************************************************************************#  
 
 # save graph         
 ggsave(filename = paste(gtitle, ".pdf", sep =""), plot = mean_point, device = "pdf",  width = 11, height = 8.5)
