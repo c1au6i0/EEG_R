@@ -41,15 +41,22 @@ for(x in file) {
 
 msgBox( paste0(length (file), " files have been imported") ) 
   
+#*************************************************************************#
+# Save a copy of the original dataset ---------------------------------------
+#*************************************************************************#
+
 alleeg_original <- alleeg
+
+
+
+# alleeg <- alleeg_original
 
 alleeg <- na.omit(alleeg)
 
-# alleeg <- alleeg_original 
+# *******************************************************************************************************************#
+# Change the name of some variables in alleeg, save unique values and Add a column with the dose of drug received----
 
-#*************************************************************************#
-# Change the name of some variables ---------------------------------------
-#*************************************************************************#
+# *******************************************************************************************************************#
 
 # all names to low cases (Ale be consistent! all or nothing!)
 
@@ -68,6 +75,11 @@ alleeg <- rename(alleeg, frequency_eeg = Frequency )
 alleeg$channel <- factor( alleeg$channel, levels = c("EEG_FL","EEG_FR", "EEG_PL", "EEG_PR", "EEG_OL", "EEG_OR") ) 
 
 
+# *************************************************************************#
+# Some unique values 
+# *************************************************************************#
+
+
 f_resol <- unique( alleeg$frequency_eeg )[1]  #frequenciesolution
 f_max <- max( alleeg$frequency_eeg )
 exp_type <- alleeg$experiment[1]
@@ -78,7 +90,7 @@ alleeg$route <- "iv"
 drug <- alleeg$drug[1]
 
 #*************************************************************************#
-# Add a column with the dose of drug received ----------------------------
+#  Add a column with the dose of drug received
 #*************************************************************************#
 
 injection_int <- as.numeric( alleeg$injection_int[1] )*60
@@ -143,26 +155,23 @@ by(alleeg, alleeg$subject, fheatmap)
 
 msgBox(c("Heatmaps have been created in ",  wdir) ) 
 
-attach(alleeg)
 
 #*************************************************************************#
 # Remove corrupted channel ------------------------------------------------
 #*************************************************************************#
 
 
-write.csv(alleeg, file = "alleeg.csv")
-
 # Need to add interactive part
 
 alleeg <- alleeg  [-c( which( alleeg$subject == "RAT06" & alleeg$channel == "EEG_OR")),]
+alleeg <- alleeg  [-c( which( alleeg$subject == "RAT08" & alleeg$channel == "EEG_FR")),]
+alleeg <- alleeg  [-c( which( alleeg$subject == "RAT08" & alleeg$channel == "EEG_PR")),]
 
+#**************************************************************#
+# Interactive section time interval for means  -----------------
+#**************************************************************#
 
-#*************************************************************************#
-# Interactive section to choose time interval for means  -----------------
-#*************************************************************************#
-
-is.wholenumber <-
-  function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
+is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
 
 interv <- as.numeric(dlgInput( paste0(c("Insert the lenght of the intervals in sec. Injection was given every ", 
                                         injection_int, " sec"), collapse =" " ), 300 )$res)
@@ -181,9 +190,9 @@ while ( !length(interv)  ||  is.na (interv)  || !is.wholenumber(injection_int/in
 
 interv <- as.numeric(interv)
 
-#*************************************************************************#
-# Interactive section to choose  between frequencies or bands for means ---
-#*************************************************************************#
+#****************************************************************************************#
+# Interactive section  frequencies or bands for means -----------------------------------
+#****************************************************************************************#
 
 dlgMessage("Are you intrested in bands or particular frequencies?\n PRESS OK TO CHOOSE")$res
 
@@ -199,9 +208,9 @@ while ( !length(res)) {
 
 
 
-#**********************************************************************************#
-# Function for Interactive session to indicate frequencies or bands for means ----#
-#**********************************************************************************#
+#*********************************************************************************************#
+# Function for Interactive session to indicate frequencies or bands for means -----------------
+#*********************************************************************************************#
 
 # fb band of frequency
 
@@ -249,15 +258,15 @@ insert_freq <- function(fb) {
 
 
 
-#**************************************************************************#
-# Fix some intervals and ask for bands and frequencies----------------------
+#*************************************************************************************************#
+# Fix some intervals,  bands and freq, and calalculate Time intervals -----------------
 # this is to avoid that the last interval is just 10 sec or is only 1 subj
-#**************************************************************************#
+#*************************************************************************************************#
 
 # max shared length of session...  
 maxtim <- min( by(alleeg, alleeg$subject, function(x) max(x$time_sec)) )
 
-alleeg <- dplyr::filter( alleeg, time_sec  <=  floor(maxtim/interv)*interv)
+alleeg <- dplyr::filter( alleeg, time_sec  <=  floor(maxtim/injection_int)*injection_int)
 
 
 
@@ -269,18 +278,15 @@ alleeg[, "M_interval"] <- as.numeric(findInterval(alleeg$time_sec,
 
 
 
-
 freq <- insert_freq(res)
 
-#**********************************************************************************#
-# Compute means of bands or frequencies--------------------------------------------#
-#**********************************************************************************#
+#******************************************************#
+# Compute means of bands or frequencies-----------------
+#******************************************************#
 
 alleeg$M_interval <- alleeg$M_interval * interv
 
-allegg <- dplyr::filter( alleeg, frequency_eeg  <=  max(freq))
-
-names(alleeg)
+write.csv(alleeg, file = paste0("alleeg_",interv, "_sec_interv.csv") )
 
 # set subtitle of the graph depending on the choice Bands/Frequencies and make the choice = symbol
 if (res == "Bands") {
@@ -290,7 +296,7 @@ if (res == "Bands") {
   sel <- as.symbol("Bands")
   subt2  <- res
   #remove frequencies over upper limit of bands (not necessary is NA are omitted after means)
-  allegg <- dplyr::filter( alleeg, frequency_eeg  <=  max(freq))
+  alleeg <- dplyr::filter( alleeg, frequency_eeg  <=  max(freq))
 }
 
 if (res == "Frequencies") {
@@ -302,98 +308,103 @@ if (res == "Frequencies") {
 
 #Final-Subject-means-eeg
 fsmeans_eeg <- alleeg %>%
-  group_by_(.dots = c(sel, "M_interval", "channel", "D_interval", "subject" )) %>%
+  group_by_(.dots = c(sel, "M_interval", "channel", "D_interval", "subject", "date" )) %>%
   dplyr::summarise(  Mean_PSD = mean(PSD), n = n(), SD = sd(PSD), Median_PSD = median(PSD))
-
 
 
 fsmeans_eeg <- na.omit(fsmeans_eeg)
 
+names(alleeg)
 
-#Final-means-eeg
+#Final-means-eeg does not work
 fmeans_eeg <- fsmeans_eeg  %>%
   group_by_(.dots = c(sel, "M_interval", "channel", "D_interval")) %>%
-  dplyr::summarise(  Mean_PSD = mean( Mean_PSD ), n = n(), SD = sd(Mean_PSD), Median_PSD = median(Mean_PSD))
+  dplyr::summarise(  Mean_PSD2 = mean(Mean_PSD), n2 = n(), SD2 = sd( Mean_PSD ), Median_PSD2 = median( Mean_PSD ))
 
-names(fmeans_eeg) [c(1,2,4)] <- c( paste(sel), "intervals_sec", "drug_dose" )
+
 names(fsmeans_eeg) [c(1,2,4)] <- c( paste(sel), "intervals_sec", "drug_dose" )
+names(fmeans_eeg) <- names(fsmeans_eeg)[names(fsmeans_eeg) != c("subject", "date")]
+
+
 
 fmeans_eeg <- na.omit(fmeans_eeg)
 
-#**********************************************************************************#
-# Graph ---------------------------------------------------------------------------#
-#**********************************************************************************#
+#*********************************#
+# Graph function -----------------
+#*********************************#
+point_graph <- function(x, sp) {
+  
+  #sp size points
+  if (missing(sp)) {  sp <- (max(x$intervals_sec) / interv) / 18 }
+  
+  csp <-  sp + sp/2
+  
+  
+  lx <- c(0 - min(x$intervals_sec/60), max(x$intervals_sec/60) + min(x$intervals_sec/60))
+  lerr <- aes(ymax = Mean_PSD + SD/sqrt(n), ymin= Mean_PSD - SD/sqrt(n))
+  
+  # breaks axis
+  yseqbreaks <- seq(0, max(x$Mean_PSD)+10, by = 5)
+  
+  #title changes depending on subject/ group
+  if ("subject" %in% names(x) ) {
+    gtitle <- paste0( x$date[1]," ",  x$subject[1], " ", drug )
+  } else {
+    gtitle <- paste0(drug, " group means")
+    
+  }
+  
+  
+  mean_point <-
+    ggplot(x, aes(intervals_sec/60, Mean_PSD,  colour = drug_dose)) +
+    geom_line(colour = "grey20") +
+    geom_errorbar(lerr, colour = "grey20") +
+    geom_point(size = csp, colour = "grey20", show.legend = TRUE) + 
+    geom_point(size = sp) +
+    scale_color_brewer(palette = "Set1") +
+    facet_grid(as.formula(paste(sel,"~","channel")), scales = "free_y") +
+    scale_x_continuous( expand = c(0,0), breaks = seqbreaks, limits = lx  ) +
+    # scale_y_continuous( expand = c(0,0), breaks = seq(0, max(x$Mean_PSD)+10, by = 5),
+    #                     limits = c(0, max(x$Mean_PSD)+10 )) +
+    labs(x = "Time (min)", 
+         y = " mean PSD (dB) and St.Err", 
+         colour = "Dose (mg/kg)", 
+         element_text(face = "bold"),
+         title = gtitle,
+         subtitle = paste0("Channels ", "X ",   subt2 )
+    ) +
+    theme(
+      strip.background  = element_blank(),
+      plot.title = element_text(face = "bold", hjust = 0.5),
+      plot.subtitle = element_text(face = "bold", hjust = 0.5),
+      legend.key = element_blank(),
+      legend.title = element_text(face = "bold", hjust = 0.5),
+      legend.background = element_rect ( color = "grey20"),
+      strip.text = element_text(size=8, face = "bold"), 
+      axis.text = element_text(size = 6, face = "bold")
+      # plot.caption = element_text(vjust = 1), 
+      # panel.grid.major = element_line(colour = "gray93"), 
+      # panel.grid.minor = element_line(colour = "gray93"), 
+      # panel.background = element_rect(fill = "white")
+    )
+  
+  ggsave(filename = paste0(gtitle, "_", interv, "_sec_interv.pdf"), plot = mean_point, device = "pdf",  width = 11, height = 8.5)
+  
+  
+}
 
-gtitle <- "Methylphenidate"
+#****************************************#
+# Create and save graphs -----------------
+#****************************************#
+
+point_graph (fmeans_eeg, sp = 4)
+
+by(fsmeans_eeg, fsmeans_eeg$subject, point_graph, sp = 4)
 
 
-#limit x axis
-lx <- c(0 - min(fmeans_eeg$intervals_sec/60), max(fmeans_eeg$intervals_sec/60) + min(fmeans_eeg$intervals_sec/60))
-lerr <- aes(ymax = Mean_PSD + SD, ymin= Mean_PSD - SD)
-
-# breaks axis
-yseqbreaks <- seq(0, max(fmeans_eeg$Mean_PSD)+10, by = 5)
-
-
-
-# Size of the points changes depending on the number of intervals
-sp <- (max(fmeans_eeg$intervals_sec) / interv) / 18
-
-
-csp <-  sp + sp/3
-
-
-mean_point <-
-  ggplot(fmeans_eeg, aes(intervals_sec/60, Mean_PSD,  colour = drug_dose)) +
-  geom_line(colour = "grey20") +
-  geom_errorbar(lerr, colour = "grey20") +
-  geom_point(size = csp, colour = "grey20", show.legend = TRUE) + 
-  geom_point(size = sp) +
-  scale_color_brewer(palette = "Set1") +
-  facet_grid(as.formula(paste("channel","~", sel))) +
-  scale_x_continuous( expand = c(0,0), breaks = seqbreaks, limits = lx  ) +
-  scale_y_continuous( expand = c(0,0), breaks = seq(0, max(fmeans_eeg$Mean_PSD)+10, by = 5), 
-                      limits = c(0, max(fmeans_eeg$Mean_PSD)+10 )) +
-  labs(x = "Time (min)", 
-       y = " mean PSD (dB) and St.Dev", 
-       colour = "Dose (mg/kg)", 
-       element_text(face = "bold"),
-       title = gtitle,
-       subtitle = paste(subt2)
-  ) +
-  theme(
-    strip.background  = element_blank(),
-    plot.title = element_text(face = "bold", hjust = 0.5),
-    plot.subtitle = element_text(face = "bold", hjust = 0.5),
-    legend.key = element_blank(),
-    legend.title = element_text(face = "bold", hjust = 0.5),
-    legend.background = element_rect ( color = "grey20"),
-    strip.text = element_text(size=8, face = "bold"), 
-    axis.text = element_text(size = 6, face = "bold")
-    # plot.caption = element_text(vjust = 1), 
-    # panel.grid.major = element_line(colour = "gray93"), 
-    # panel.grid.minor = element_line(colour = "gray93"), 
-    # panel.background = element_rect(fill = "white")
-  )
-
-
-#**********************************************************************************#
-# Save plot and means -------------------------------------------------------------#
-#**********************************************************************************#  
-
-# save graph         
-ggsave(filename = paste(gtitle, ".pdf", sep =""), plot = mean_point, device = "pdf",  width = 11, height = 8.5)
+msgBox(c("One or multiple point graphs have been created in ",  wdir) )
 
 
 
-msgBox(c("A point graph and a summary csv has been created in ",  wdir) )
 
-# Rename columns and reorder them
-tabegg <-alleeg
-
-
-colnames(tabegg) <- c( paste(subt2), "intervals_sec", "channel", 
-                       "drug dose (mg/kg)", "mean PSD (dB)","n", "SD", "median PSD (dB)")  
-tabegg <- mutate(tabegg, subj = subj, drug = drug, eeg_date = as.character.Date(eeg_date) )
-tabegg <- tabegg[, c(9, 10, 11, 1:8)]
 
