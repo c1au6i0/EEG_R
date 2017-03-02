@@ -3,11 +3,13 @@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 # needs "sel", and subt2
 
-
 point_graph <- function(x, sp, perc) {
   
   #sp size points
-  if (missing(sp)) {  sp <- (max(x$intervals_sec) / interv) / 18 }
+  if (missing(sp) || sp == "A") {  sp <- (17/(max(fsmeans_eeg$intervals_sec)/interv)) }
+  
+  # if (missing(sp))   sp <-  1.2
+  
   
   csp <-  sp + sp/2
   
