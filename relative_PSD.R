@@ -1,3 +1,5 @@
+#import the absolute output file fmean_eeg
+
 eeg <- read.csv( file.choose() , header = TRUE, sep = "," , stringsAsFactors = F)
 names(eeg)
 eeg <-  eeg[,2: ncol(eeg)]
@@ -5,6 +7,8 @@ eeg <-  eeg[,2: ncol(eeg)]
 
 # require tidyr and dplyr and ggplot
 
+library("tidyr")
+library("ggplot2")
 
 perc <- function (i) {
    perct <- i$Mean_PSD / sum(i$Mean_PSD) * 100
@@ -30,19 +34,20 @@ relativePSD_t <- relativePSD   %>%
 
 
 
-FR_rel <- subset(relativePSD_t, channel == "EEG_FL")
+FR_rel <- subset(relativePSD_t, channel == "EEG_FRONT")
 
  
-ggplot(data = FR_rel, aes(x = factor(interval_sec), y = PSD, colour = Bands)) + 
+ggplot(data = FR_rel, aes(x = as.numeric(interval_sec)/300, y = PSD, colour = Bands)) + 
    geom_line(aes(group = Bands)) +
    labs(x =  "Interval (5 min)", 
-       y = "% Power") +
+       y = "% Relative Power") +
+  
+  scale_x_continuous(breaks = unique (as.numeric(FR_rel$interval_sec)/300))
 
-  scale_x_discrete( expand = c(0,0), labels = B)
 
 
-+ 
+
 
   
-B <- 1:27
+
 

@@ -130,6 +130,17 @@ Version: 1.8.4
 Hash: c9ddbdcfd74ff964e3e7d0b692a8dd70
 Requires: Rcpp
 
+Package: pracma
+Source: CRAN
+Version: 2.0.4
+Hash: 9c960d53fedb1459316c12ac8d7e7e4c
+Requires: quadprog
+
+Package: quadprog
+Source: CRAN
+Version: 1.5-5
+Hash: 69000b7dc41b09977dcf781f909d235c
+
 Package: quantmod
 Source: CRAN
 Version: 0.4-7

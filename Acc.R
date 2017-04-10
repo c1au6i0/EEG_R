@@ -20,9 +20,9 @@ library("viridis")
 library("pracma")
 
 
-setwd("i:/EEG data/EEG_R")
+# setwd("i:/EEG data/EEG_R")
 
-# setwd("J:/EEG data/EEG_R")
+setwd("J:/EEG data/EEG_R")
 ufunc <- list( "fheatmap.R", "insert_freq.R", "levelsort.R", "point_graph.R", "remcorr.R" )
 
 sapply(ufunc, source, .GlobalEnv)
@@ -36,7 +36,7 @@ file <- list.files(include.dirs=FALSE)
 dirs <- basename(list.dirs())
 file <- file[!file %in% dirs]
 
-nread <- file[grepl("*pdf|*lnk|*txt|Doses.csv", file)]
+nread <- file[grepl("*pdf|*lnk|*txt|*pzf|Doses.csv", file)]
 
 file <- file[!file %in% nread]
 
@@ -144,7 +144,7 @@ subt <- paste0( )
 
 seqbreaks <- seq(0, max(alleeg$time_sec/60), by = injection_int/60)
 
-# alleeg <- subset( alleeg, alleeg$time_sec <= 2400)
+
 
 p1 <- ggplot(alleeg, aes(time_sec/60, mean_acc_modulus)) +
   geom_line() +
@@ -190,16 +190,25 @@ lab <- c("Mean acc Modulus", "         Acc_x", "         Acc_y","         Acc_z"
 
 allACC <- plot_grid(p1,p2,p3,p4, labels = lab, hjust = -0.5)
 save_plot(filename = gtitle, allACC, base_aspect_ratio = 2.1)
+ 
 
+evenint <- as.numeric( (length(alldoses) + 1) * injection_int)
 
+alleeg_acc <- subset( alleeg, alleeg$time_sec <= evenint   )
 
+n_obs <- by(data = alleeg_acc, INDICES = alleeg_acc$D_interval,  function (x) length(x$mean_acc_modulus) )
 
-
-n_events <- by(data = alleeg, INDICES = alleeg$D_interval,  function (x) nrow(findpeaks(x$mean_acc_modulus)))
-
-prova <- by(data = alleeg, INDICES = alleeg$D_interval,  function (x) length(x$mean_acc_modulus) )
-
+n_events <- by(data = alleeg_acc, INDICES = alleeg_acc$D_interval,  
+               function (x) nrow(findpeaks(x$mean_acc_modulus)))
 
 n_events <-  do.call(rbind, as.list(n_events) )
 
+n_events
+
+write.csv(n_events, file = "n_events.csv" )
+
 }
+
+
+as.numeric( (length(alldoses) + 1) * injection_int )
+
