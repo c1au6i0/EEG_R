@@ -6,7 +6,7 @@
 point_graph <- function(x, sp, perc) {
   
   #sp size points
-  if (missing(sp) || sp == "A") {  sp <- (17/(max(fsmeans_eeg$intervals_sec)/interv)) }
+  if (missing(sp) || sp == "A") {  sp <- (17/(max(x$intervals_sec)/x$intervals_sec[1])) }
   
   # if (missing(sp))   sp <-  1.2
   
@@ -15,10 +15,10 @@ point_graph <- function(x, sp, perc) {
   
   
   lx <- c(0 - min(x$intervals_sec/60), max(x$intervals_sec/60) + min(x$intervals_sec/60))
-  lerr <- aes(ymax = Mean_PSD + SD/sqrt(n), ymin= Mean_PSD - SD/sqrt(n))
+
   
   # breaks axis
-  yseqbreaks <- seq(0, max(x$Mean_PSD)+10, by = 5)
+
   
   #title changes depending on subject/ group
   if ("subject" %in% names(x) ) {
@@ -36,14 +36,28 @@ answ <- list("yes","Yes", "YES","y", "Y")
 if (missing(perc) || !perc %in% answ ) {
   ylab <- "PSD  (dB) and St.Err"
   prefix <- "Absolute_" 
-} else {
+
+  
+  xyc <- aes(intervals_sec/60, Mean_PSD, colour = drug_dose)
+  lerr <- aes(max = Mean_PSD + SD/sqrt(n), ymin= Mean_PSD - SD/sqrt(n))
+  yseqbreaks <- seq(0, max(x$Mean_PSD)+10, by = 5)
+
+  } else {
   ylab <- " % baseline PSD  (dB) and St.Err"
   prefix <- "Perc_" 
+  
+  xyc <- aes(intervals_sec/60, Percent_baseline, colour = drug_dose)
+  lerr <- aes(ymax = Percent_baseline + SD/sqrt(n), ymin= Percent_baseline - SD/sqrt(n))
+  yseqbreaks <- seq(0, max(x$Percent_baseline)+10, by = 5)
 }
+
+
+
+
 
   
   mean_point <-
-    ggplot(x, aes(intervals_sec/60, Mean_PSD,  colour = drug_dose)) +
+    ggplot(x, xyc) +
     geom_line(colour = "grey20") +
     geom_errorbar(lerr, colour = "grey20") +
     geom_point(size = csp, colour = "grey20", show.legend = TRUE) + 
