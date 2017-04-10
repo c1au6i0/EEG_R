@@ -32,7 +32,7 @@ point_graph <- function(x, sp, perc) {
 answ <- list("yes","Yes", "YES","y", "Y")
 
 
-  
+# check if argument is present  
 if (missing(perc) || !perc %in% answ ) {
   ylab <- "PSD  (dB) and St.Err"
   prefix <- "Absolute_" 
@@ -82,10 +82,10 @@ if (missing(perc) || !perc %in% answ ) {
       legend.title = element_text(face = "bold", hjust = 0.5),
       legend.background = element_rect ( color = "grey20"),
       strip.text = element_text(size=8, face = "bold"), 
-      axis.text = element_text(size = 6, face = "bold")
-      # plot.caption = element_text(vjust = 1), 
-      # panel.grid.major = element_line(colour = "gray93"), 
-      # panel.grid.minor = element_line(colour = "gray93"), 
+      axis.text = element_text(size = 6, face = "bold"),
+      plot.caption = element_text(vjust = 1),
+      panel.grid.major = element_line(colour = "white"),
+      panel.grid.minor = element_line(colour = "white")
       # panel.background = element_rect(fill = "white")
     )
   

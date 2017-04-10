@@ -32,11 +32,11 @@ file <- list.files(include.dirs=FALSE)
 
 dirs <- basename(list.dirs())
 file <- file[!file %in% dirs]
-link <- file[grepl(paste ("*","lnk", sep=""), file )]
-pdfs <- file[grepl(paste ("*","pdf", sep=""), file )]
-file <- file[!file %in% link]
-file <- file[!file %in% pdfs]
-file <- file[!file %in% "Doses.csv"]
+
+nread <- file[grepl("*pdf|*lnk|*txt|Doses.csv", file)]
+
+file <- file[!file %in% nread]
+
 
 msgBox(c("Relax...importing the files will take few seconds. PRESS OK "))
 
@@ -46,7 +46,7 @@ msgBox(c("Relax...importing the files will take few seconds. PRESS OK "))
 
 for(x in file) {
   eeg <- read.csv( x , header = TRUE, sep = "," )
-  
+  eeg$date <- as.character(eeg$date)
   
   if (exists("alleeg")) {
     alleeg <- rbind( alleeg, eeg,row.names=NULL )
@@ -122,7 +122,7 @@ baseline_int <- as.numeric( alleeg$baseline[1] )*60
 #                                         [1 : (length(unlist(strsplit(tail(sd0,1), ""))) - 4)], collapse = "") )
 # alldoses <- as.numeric(sd0)
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
-# CHECK: ADD PART TO VERIFY DOSES FILE -----------------
+# PART TO VERIFY DOSES FILE -----------------
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 
 # Looks for a file called call Doses.csv and imports doses
@@ -385,16 +385,23 @@ while( !exists("loop") ||   loop == "yes" ) {
   #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
   # aqw <- dcast(alleef, Bands + Interval = Dose ~ PSD)
   
+   
   
   fmeans_eeg$Bands <- factor( fmeans_eeg$Bands, levels = c("Delta","Theta", "Alpha", "Beta", "Gamma") ) 
   fsmeans_eeg$Bands <- factor( fsmeans_eeg$Bands, levels = c("Delta","Theta", "Alpha", "Beta", "Gamma") ) 
   fgperc_eeg$Bands <- factor( fgperc_eeg$Bands, levels = c("Delta","Theta", "Alpha", "Beta", "Gamma") ) 
   fsperc_eeg$Bands <- factor( fsperc_eeg$Bands, levels = c("Delta","Theta", "Alpha", "Beta", "Gamma") ) 
   
-  write.csv(fmeans_eeg , file = paste0("fmeans_eeg _",interv, "_sec_interv.csv") )
+  write.csv(fmeans_eeg , file = paste0("fmeans_eeg_",interv, "_sec_interv.csv") )
   write.csv(fsmeans_eeg  , file = paste0("fsmeans_eeg_",interv, "_sec_interv.csv") )
   write.csv(fgperc_eeg  , file = paste0("fgperc_eeg_",interv, "_sec_interv.csv") )
   write.csv(fsperc_eeg  , file = paste0("fsperc_eeg_",interv, "_sec_interv.csv") )
+  
+
+  
+  
+  
+  
   
   #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
   # Create and save graphs -----------------
@@ -404,9 +411,10 @@ while( !exists("loop") ||   loop == "yes" ) {
   
   msgBox(c("Now we make some graphs..it might take few sec. PRESS OK "))
   
-  point_graph (fmeans_eeg, sp = sp)
-  point_graph (fgperc_eeg, perc = "yes", sp = sp)
-  
+  if ( !length(unique(alleeg2$subject)) == 1) {
+    point_graph (fmeans_eeg, sp = sp)
+    point_graph (fgperc_eeg, perc = "yes", sp = sp)
+  }
   
   
   by(fsmeans_eeg, fsmeans_eeg$subject, point_graph, sp = sp)
@@ -437,6 +445,6 @@ while( !exists("loop") ||   loop == "yes" ) {
 
 }
 
-rm( list= ls() )
+# rm( list= ls() )
 
 
