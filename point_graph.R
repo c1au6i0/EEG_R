@@ -2,6 +2,10 @@
 # Graph function -----------------
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 # needs "sel", and subt2
+# sp = size of the points
+# perc = is it a percentage or not
+# x = dataframe
+# use as.name to use variables....
 
 point_graph <- function(x, sp, perc) {
   

@@ -372,6 +372,8 @@ while( !exists("loop") ||   loop == "yes" ) {
   
   fsperc_eeg[, "Percent_baseline"] <- fsperc_eeg$Mean_PSD/fsperc_eeg$baseline_PSD*100
   
+  ##########ADD HERE FORMULAS FOR OTHER xx
+  
   # if I call it Percent_baseline it fucks everything up
   fgperc_eeg <- fsperc_eeg  %>%
     group_by_(.dots = c(sel, "intervals_sec", "channel", "drug_dose")) %>%

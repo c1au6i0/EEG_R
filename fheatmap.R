@@ -15,7 +15,7 @@ fheatmap <- function (x) {
          title = paste(gtitle),
          subtitle = paste(subt)) +
     scale_x_continuous( expand = c(0,0), breaks = seqbreaks ) +
-    scale_y_continuous( expand = c(0,0) ) +
+    scale_y_log10( expand = c(0,0) ) +
     theme( plot.subtitle = element_text(hjust = 0.5),
            plot.caption = element_text(vjust = 1),
            plot.title = element_text(hjust = 0.5) )
