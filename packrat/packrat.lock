@@ -33,6 +33,12 @@ Source: CRAN
 Version: 1.1-2
 Hash: c0d56cd15034f395874c870141870c25
 
+Package: RSQLite
+Source: CRAN
+Version: 1.1-2
+Hash: 100a22d6b04ccc294a698ad7f8494e91
+Requires: BH, DBI, Rcpp, memoise, plogr
+
 Package: Rcpp
 Source: CRAN
 Version: 0.12.10
@@ -109,11 +115,23 @@ Source: CRAN
 Version: 1.5
 Hash: bdc4d48c3135e8f3b399536ddf160df4
 
+Package: memoise
+Source: CRAN
+Version: 1.1.0
+Hash: 410fcd334bc626db100237cc1370f2e9
+Requires: digest
+
 Package: munsell
 Source: CRAN
 Version: 0.4.3
 Hash: f96d896947fcaf9b6d0074002e9f4f9d
 Requires: colorspace
+
+Package: nycflights13
+Source: CRAN
+Version: 0.2.2
+Hash: dc3dbaaf3493c7ea43ff8a1523046c80
+Requires: tibble
 
 Package: packrat
 Source: github
@@ -123,6 +141,11 @@ GithubRepo: packrat
 GithubUsername: rstudio
 GithubRef: master
 GithubSha1: 80f8184c637c6c3e2a8bb371924b8b07667a9db3
+
+Package: plogr
+Source: CRAN
+Version: 0.1-1
+Hash: fb19215402e2d9f1c7f803dcaa806fc2
 
 Package: plyr
 Source: CRAN
@@ -152,6 +175,12 @@ Source: CRAN
 Version: 1.4.2
 Hash: 790c06c11c84041b814139d731a872b9
 Requires: Rcpp, plyr, stringr
+
+Package: reticulate
+Source: CRAN
+Version: 0.7
+Hash: 826c1eccfafcb4a73c7931c8847db31b
+Requires: Rcpp
 
 Package: scales
 Source: CRAN

@@ -62,7 +62,7 @@ if (missing(perc) || !perc %in% answ ) {
   
   mean_point <-
     ggplot(x, xyc) +
-    geom_line(colour = "grey20") +
+    geom_line() +
     geom_errorbar(lerr, colour = "grey20") +
     geom_point(size = csp, colour = "grey20", show.legend = TRUE) + 
     geom_point(size = sp) +

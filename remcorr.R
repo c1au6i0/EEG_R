@@ -26,3 +26,4 @@ remcorr <- function (x) {
 
 
 
+db_insert_into

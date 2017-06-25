@@ -7,8 +7,8 @@
 
 insert_freq <- function(fb) {
   
-  banddef<-"4,8,13,30,50"
-  fdef<-"10,20,30,40"
+  banddef <- "4,8,13,30,50"
+  fdef <- "10,20,30,40"
   
   # Depending of the choice frequency/bands the message changes
   
