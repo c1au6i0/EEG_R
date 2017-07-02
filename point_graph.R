@@ -93,7 +93,7 @@ if (missing(perc) || !perc %in% answ ) {
       # panel.background = element_rect(fill = "white")
     )
   
-  ggsave(filename = paste0(prefix, gtitle, "_", interv, "_sec_interv.pdf"), plot = mean_point, device = "pdf",  width = 11, height = 8.5)
+  ggsave(filename = paste0(prefix, gtitle, "_", interv, "_sec_",lat,".pdf"), plot = mean_point, device = "pdf",  width = 11, height = 8.5)
   
   
 }

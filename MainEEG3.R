@@ -7,22 +7,25 @@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 # Library and user functions ----------------------------------------------
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
-library("colorspace")
-library("DBI")
-library("plyr")
-library("dplyr")
-library("ggplot2")
-library("magrittr")
-library("packrat")
-library("RSQLite")
-library("scales")
-library("svDialogs")
-library("viridis")
+to_load  <- list( "colorspace",
+                  "DBI",
+                  "plyr",
+                  "dplyr",
+                  "ggplot2",
+                  "lazyeval",
+                  "magrittr",
+                  "packrat",
+                  "RSQLite",
+                  "scales",
+                  "svDialogs",
+                  "viridis")
 
+
+lapply(to_load, require, character.only = TRUE)
 
 
 setwd("J:/EEG data/EEG_R")
-ufunc <- list( "fheatmap.R", "insert_freq.R", "levelsort.R", "point_graph.R", "remcorr.R", "percent_baseline" )
+ufunc <- list( "fheatmap.R", "insert_freq.R", "levelsort.R", "point_graph.R", "remcorr.R", "percent_baseline.R" )
 
 sapply(ufunc, source, .GlobalEnv)
 

@@ -368,7 +368,7 @@ while( !exists("loop") ||   loop == "yes" ) {
   
   # Sort baseline_eeg by sel, channel, subject
   baseline_eeg <-  dplyr::arrange_(data.frame(ungroup(baseline_eeg)), .dots = c(as.character(sel),  "channel", "subject" )  )
-
+  
   
   # Calculate number of observation for each subject, fr/band, channel
   obs <- fsmeans_eeg  %>%
