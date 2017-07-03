@@ -25,7 +25,7 @@ lapply(to_load, require, character.only = TRUE)
 
 
 setwd("J:/EEG data/EEG_R")
-ufunc <- list( "fheatmap.R", "insert_freq.R", "levelsort.R", "point_graph.R", "remcorr.R", "percent_baseline.R" )
+ufunc <- list( "fheatmap.R", "equal_sub.R","insert_freq.R", "levelsort.R", "mean_bands.R","no_lateral.R","point_graph.R", "remcorr.R", "percent_baseline.R" )
 
 sapply(ufunc, source, .GlobalEnv)
 
@@ -178,7 +178,7 @@ if (res == "yes") {
   
   msgBox(c("Good, it might take few sec. PRESS OK "))
     
-  by(alleeg, alleeg$subject, fheatmap)  
+  by(alleeg, alleeg$subject, fheatmap, subt = subt)  
   
   msgBox(c("Heatmaps have been created in ",  wdir) ) 
 

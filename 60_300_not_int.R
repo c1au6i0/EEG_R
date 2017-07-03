@@ -115,24 +115,11 @@ injection_int <- as.numeric( alleeg$injection_int[1] )*60
 baseline_int <- as.numeric( alleeg$baseline[1] )*60
 
 
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
-#  Add a column with the dose of drug received
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
-
-
-
-# sd0 <- unlist(strsplit(as.character(basename(x)), "_"))
-# sd0 <- sd0[ 2: length(sd0) ]
-# 
-# #this remove the .csv from the last dose
-# sd0 [length(sd0)] <- as.numeric( paste( unlist( strsplit(tail(sd0,1), "")) 
-#                                         [1 : (length(unlist(strsplit(tail(sd0,1), ""))) - 4)], collapse = "") )
-# alldoses <- as.numeric(sd0)
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 # Do we have a dose file? -----------------
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 
-# Looks for a file called call Doses.csv and imports doses
+# Looks for a file called call Doses.csv and imports doses------
 
 while (!"Doses.csv" %in% list.files(include.dirs=FALSE)) {
   
@@ -171,7 +158,7 @@ wdir <- getwd()
 
 
   
-by(alleeg, alleeg$subject, fheatmap)  
+by(alleeg, alleeg$subject, fheatmap, subt = subt)  
   
 
 
@@ -211,7 +198,7 @@ lat <- c("yes", "no")
 res <- "Bands"
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
-# Calalculate Time intervalsand  Fix some intervals,  bands and freq-----------------
+# Calalculate Time intervals and  Fix some intervals,  bands and freq-----------------
 # this is to avoid that the last interval is just 10 sec or is only 1 subj
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 
