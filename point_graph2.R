@@ -91,7 +91,7 @@ point_graph2 <- function(df, yaes, lerr, perc, sp, sel, subt2, seqbreaks) {
 }
 
 
-point_graph2(df = fmeans_eeg,  yaes = "Mean_PSD", lerr= "SD", sp= "A", subt2 = subt2, sel = sel, seqbreaks = seqbreaks)
+# point_graph2(df = fmeans_eeg,  yaes = "Mean_PSD", lerr= "SD", sp= "A", subt2 = subt2, sel = sel, seqbreaks = seqbreaks)
 
 
 

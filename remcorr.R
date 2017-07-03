@@ -20,7 +20,7 @@ remcorr <- function (x) {
         
     }
   
-  alleeg
+  alleeg 
 }
 
 

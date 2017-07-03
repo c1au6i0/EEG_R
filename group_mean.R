@@ -1,4 +1,4 @@
-group_mean <- function (dat, variab, forB) {
+group_mean <- function (dat, variab, forB, namen) {
 
 
   if(missing(forB)) forB <- "Bands"
@@ -18,14 +18,18 @@ group_mean <- function (dat, variab, forB) {
                    Median_PSD = median(!!variab)
   )
 
-  x <- rename(x, Mean_PSD = a )
+  names(x)[names(x) == "a"] <- paste(namen)
   
   x
 
 }
   
 
-  
-# prova <-  group_mean(dat = fsmeans_eeg, variab = Mean_PSD)
-  
-
+#   
+# prova <-  group_mean(dat = fsmeans_eeg, variab = Mean_PSD, namen = "xxx")
+#   
+# 
+# names(prova)[names(prova) == "namen"] <- paste(namen)
+# 
+# 
+# namen <- "prova"
