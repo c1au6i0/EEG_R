@@ -34,7 +34,12 @@ mean_bands <- function(dat, interv, freq) {
   
   #Final-Subject-means-eeg
   fsmeans_eeg <- group_by_(dat, .dots = c(sel, "M_interval", "channel", "D_interval", "drug", "date", "subject"))
-  fsmeans_eeg <-  dplyr::summarise(fsmeans_eeg,  Mean_PSD = mean(PSD), n = n(), SD = sd(PSD), Median_PSD = median(PSD))
+  fsmeans_eeg <-  dplyr::summarise(fsmeans_eeg, Mean_PSD = mean(PSD),
+                                                n = n(), 
+                                                SD = sd(PSD),
+                                                SER = SD / sqrt(n),
+                                                Median_PSD = median(PSD)
+                                   )
   
   
   fsmeans_eeg <- data.frame(na.omit(fsmeans_eeg))

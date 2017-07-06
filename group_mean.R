@@ -1,4 +1,4 @@
-group_mean <- function (dat, variab, forB, namen) {
+group_mean <- function (dat, forB) {
 
 
   if(missing(forB)) forB <- "Bands"
@@ -8,28 +8,23 @@ group_mean <- function (dat, variab, forB, namen) {
   fmeans_eeg <- group_by(dat, .dots = c(forB, "intervals_sec", "channel", " drug_dose", "drug"))
   
 
-  variab <- enquo(variab)
-  
 
   x <- dplyr::summarise(fmeans_eeg, 
-                   a = mean(!!variab),
+                   Mean_abs = mean(Mean_PSD),
                    n = n(),
-                   SD = sd(!!variab),
-                   Median_PSD = median(!!variab)
+                   Abs_SD = sd(Mean_PSD),
+                   Abs_SER = Abs_SD / sqrt(n()),
+                   Median_abs = median(Mean_PSD),
+                   Perc = mean(Percent_baseline),
+                   Perc_SD = sd(Percent_baseline),
+                   Perc_SER = Perc_SD/ sqrt(n())
   )
 
-  names(x)[names(x) == "a"] <- paste(namen)
+  # names(x)[names(x) == "a"] <- paste(namen)
   
   x
-
 }
   
 
-#   
-# prova <-  group_mean(dat = fsmeans_eeg, variab = Mean_PSD, namen = "xxx")
-#   
-# 
-# names(prova)[names(prova) == "namen"] <- paste(namen)
-# 
-# 
-# namen <- "prova"
+   
+

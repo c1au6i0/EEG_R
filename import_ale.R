@@ -20,6 +20,9 @@ import_ale <- function ( fold ) {
   alleeg  <-  Reduce(function(...) merge(..., all=T),   prova )
   
   
+  alleeg <- na.omit(alleeg)
+  
+  
   alleeg$date <- as.character(alleeg$date)
   alleeg$date <- gsub("/","-", alleeg$date) # remove / from date, / can cause problems
   
