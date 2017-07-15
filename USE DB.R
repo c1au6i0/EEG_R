@@ -2,21 +2,31 @@
 
 library(DBI)
 library(RSQLite)
-
-
-dbWriteTable(DB, "tablename", dtf, append=TRUE, row.names = FALSE)
-
-
+library(dplyr)
+library(dbplyr)
 
 mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite")
-dbListTables(mydb)
 
 
 
-dbRemoveTable(mydb, "lat60s")
+alleeg <- dbGetQuery(mydb, 'SELECT * FROM modafinil')
+
+# alleeg  <- tbl(mydb, "modafinil") 
 
 
-alleeg <- dbGetQuery(mydb, 'SELECT * FROM morphine')
+alldoses <- as.numeric(unique(alleeg$D_interval[!alleeg$D_interval == "baseline"]))
+drug <- alleeg$drug[1]
+injection_int <- as.numeric( alleeg$injection_int[1] )*60
+baseline_int <- as.numeric( alleeg$baseline[1] )*60
+
+setwd(choose.dir())
+
+
+
+
+
+
+
 
 
 getwd()
@@ -24,7 +34,14 @@ getwd()
 
 
 
-dbWriteTable(mydb, "lat60s", fsperc_eeg)
+dbWriteTable(mydb, paste(drug), alleeg2)
+
+
+dbListTables(mydb)
+
 
 setOldClass(c("grouped_df", "tbl_df", "data.frame"))
+cocaine_db <- tbl(mydb, "cocaine")
+
+
 

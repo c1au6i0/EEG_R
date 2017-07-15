@@ -13,9 +13,11 @@ import_ale <- function ( fold ) {
   
   file <- file[!file %in% nread]
   
-  
+
   prova <- lapply (file, function (x) read.csv( x , header = TRUE, sep = "," ))
   
+  
+
   
   alleeg  <-  Reduce(function(...) merge(..., all=T),   prova )
   
@@ -31,9 +33,9 @@ import_ale <- function ( fold ) {
   # remove Frequencies = 0
   alleeg <- subset(alleeg, Frequency > 0)
   
-  alleeg <- rename(alleeg, time_sec = time )
-  alleeg <- rename(alleeg, injection_int = timeinterval )
-  alleeg <- rename(alleeg, frequency_eeg = Frequency )
+  alleeg <- dplyr::rename(alleeg, time_sec = time )
+  alleeg <- dplyr::rename(alleeg, injection_int = timeinterval )
+  alleeg <- dplyr::rename(alleeg, frequency_eeg = Frequency )
   
   # this is to order the facet in the graph
   alleeg$channel <- factor( alleeg$channel, levels = c("EEG_FL","EEG_FR", "EEG_PL", "EEG_PR", "EEG_OL", "EEG_OR") ) 
@@ -84,7 +86,7 @@ import_ale <- function ( fold ) {
   
   out
 }
-
+# 
 
 # 
 # prova <- import_ale(fold <- gdir)

@@ -98,9 +98,10 @@ names(alleeg)[ !names(alleeg) %in% c("PSD","Frequency") ] <- tolower( names(alle
 # remove Frequencies = 0
 alleeg <- subset(alleeg, Frequency > 0)
 
-alleeg <- rename(alleeg, time_sec = time )
-alleeg <- rename(alleeg, injection_int = timeinterval )
-alleeg <- rename(alleeg, frequency_eeg = Frequency )
+
+alleeg <- dplyr::rename(alleeg, time_sec = time )
+alleeg <- dplyr::rename(alleeg, injection_int = timeinterval )
+alleeg <- dplyr::rename(alleeg, frequency_eeg = Frequency )
 
 
 
@@ -187,7 +188,7 @@ if (res == "yes") {
   
   msgBox(c("Good, it might take few sec. PRESS OK "))
     
-  by(alleeg, alleeg$subject, fheatmap, subt = subt)  
+  by(alleeg, alleeg$subject, fheatmap, subt = subt, seqbreaks = seqbreaks)  
   
   msgBox(c("Heatmaps have been created in ",  wdir) ) 
 

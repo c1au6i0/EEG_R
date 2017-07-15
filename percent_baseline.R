@@ -13,7 +13,9 @@
 percent_baseline <- function(df, groupby, basel, variab , form, oper, namen) {
   
   if(missing(form)) form <- "mean"
-
+  
+  df <- as.data.frame(df)
+  
   # create formula
   formvars <- paste0(form, "(", variab , ")")
   
@@ -32,8 +34,8 @@ percent_baseline <- function(df, groupby, basel, variab , form, oper, namen) {
   baseline_eeg <-  dplyr::arrange_(data.frame(ungroup(baseline_eeg)), .dots =  groupby)
 
   
-  obsv <-  group_by_(fsmeans_eeg, .dots = groupby) 
-  obsv <-  summarise(obsv,  Observ = n() ) 
+  obsv <-  group_by_(df, .dots = groupby) 
+  obsv <-  dplyr::summarise(obsv,  Observ = n() ) 
   obsv <-  dplyr::arrange_(data.frame(ungroup(obsv)), .dots =  groupby)
   
 
@@ -56,7 +58,7 @@ percent_baseline <- function(df, groupby, basel, variab , form, oper, namen) {
   out[, namen] <-   eval(parse(text = oper))
   
   
-  out
+  as.data.frame(out)
 }
 
 

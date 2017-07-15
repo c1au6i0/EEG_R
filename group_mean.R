@@ -1,6 +1,7 @@
 group_mean <- function (dat, forB) {
 
-
+  dat <- as.data.frame(dat)
+    
   if(missing(forB)) forB <- "Bands"
   
   
@@ -10,19 +11,29 @@ group_mean <- function (dat, forB) {
 
 
   x <- dplyr::summarise(fmeans_eeg, 
-                   Mean_abs = mean(Mean_PSD),
-                   n = n(),
-                   Abs_SD = sd(Mean_PSD),
-                   Abs_SER = Abs_SD / sqrt(n()),
-                   Median_abs = median(Mean_PSD),
-                   Perc = mean(Percent_baseline),
-                   Perc_SD = sd(Percent_baseline),
-                   Perc_SER = Perc_SD/ sqrt(n())
+                   PSD_abs2 = mean(PSD_abs),
+                   n2 = n(),
+                   PSD_abs_SD2 = sd(PSD_abs),
+                   PSD_abs_SER2 = PSD_abs_SD2  / sqrt(n()),
+                   PSD_Median2 = median(PSD_abs),
+                   PSD_Perc2 = mean(PSD_perc),
+                   Perc_SD2 = sd(PSD_perc),
+                   Perc_SER2 = Perc_SD2/ sqrt(n())
   )
 
-  # names(x)[names(x) == "a"] <- paste(namen)
   
-  x
+  names(x)[(length(names(x))-7) : length(names(x))] <- c("PSD_abs", 
+                                                         "n",
+                                                         "PSD_abs_SD",
+                                                         "PSD_abs_SER",
+                                                         "PSD_median",
+                                                         "PSD_perc",
+                                                         "PSD_perc_SD",
+                                                         "PSD_perc_SER"
+  )
+
+  x                                                         
+
 }
   
 

@@ -1,11 +1,7 @@
 PackratFormat: 1.4
 PackratVersion: 0.4.8.9
-RVersion: 3.3.2
-Repos: BioCsoft=https://bioconductor.org/packages/3.2/bioc,
-    BioCann=https://bioconductor.org/packages/3.2/data/annotation,
-    BioCexp=https://bioconductor.org/packages/3.2/data/experiment,
-    BioCextra=https://bioconductor.org/packages/3.2/extra,
-    CRAN=https://cran.rstudio.com/,
+RVersion: 3.4.1
+Repos: CRAN=https://cran.rstudio.com/,
     CRANextra=https://www.stats.ox.ac.uk/pub/RWin
 
 Package: BH
@@ -46,14 +42,24 @@ Hash: 2ee22f3b5e75dec80b1d8eca61cd96d8
 
 Package: TTR
 Source: CRAN
-Version: 0.23-1
-Hash: 4d137b2fd11667a413d92e31f106e839
-Requires: xts, zoo
+Version: 0.23-2
+Hash: e46bdb7c1058913a2a3e093855f36be7
+Requires: curl, xts, zoo
 
 Package: assertthat
 Source: CRAN
 Version: 0.2.0
 Hash: e8805df54c65ac96d50235c44a82615c
+
+Package: backports
+Source: CRAN
+Version: 1.1.0
+Hash: 3f754426ca2b7dbbf63951fe5075373b
+
+Package: base64enc
+Source: CRAN
+Version: 0.1-3
+Hash: c590d29e555926af053055e23ee79efb
 
 Package: bindr
 Source: CRAN
@@ -77,11 +83,22 @@ Version: 0.9-7
 Hash: 4b195615d19ba49c114eb04e09e30a96
 Requires: bit
 
+Package: bitops
+Source: CRAN
+Version: 1.0-6
+Hash: 67d0775189fd0041d95abca618c5c07e
+
 Package: blob
 Source: CRAN
 Version: 1.1.0
 Hash: e29764e47f2faf0cd5b74cbcddc3fa9c
 Requires: tibble
+
+Package: caTools
+Source: CRAN
+Version: 1.17.1
+Hash: 97cb6f6293cd18d17df77a6383cc6763
+Requires: bitops
 
 Package: colorspace
 Source: CRAN
@@ -94,10 +111,27 @@ Version: 0.7.0
 Hash: 2466c098180dba6d13128bbdafeb1eda
 Requires: ggplot2, gtable, plyr
 
+Package: crosstalk
+Source: CRAN
+Version: 1.0.0
+Hash: c13adea5906fbe2becfcb5f843b26749
+Requires: R6, ggplot2, htmltools, jsonlite, lazyeval, shiny
+
 Package: curl
 Source: CRAN
 Version: 2.7
 Hash: 1d97b529645be4e502fad3db22415e66
+
+Package: data.table
+Source: CRAN
+Version: 1.10.4
+Hash: 2c7c47ccb40d01c7b214c8eff818108d
+
+Package: dbplyr
+Source: CRAN
+Version: 1.1.0
+Hash: 3375b0f6df680aa0708ec0dfe0334c4d
+Requires: DBI, R6, assertthat, dplyr, glue, purrr, rlang, tibble
 
 Package: dichromat
 Source: CRAN
@@ -115,6 +149,22 @@ Version: 0.7.1
 Hash: 160bc6cc8d861967782cd3fa86287615
 Requires: BH, R6, Rcpp, assertthat, bindrcpp, glue, magrittr,
     pkgconfig, plogr, rlang, tibble
+
+Package: evaluate
+Source: CRAN
+Version: 0.10.1
+Hash: 54d95f4ec6d0300100413ed0127d89ae
+Requires: stringr
+
+Package: fmsb
+Source: CRAN
+Version: 0.6.1
+Hash: 4bf4e5a222f6a1b53148b7ccd72deebf
+
+Package: formatR
+Source: CRAN
+Version: 1.5
+Hash: 258cf79a8dbeedf1c981cdb53837d2af
 
 Package: ggplot2
 Source: CRAN
@@ -139,6 +189,46 @@ Source: CRAN
 Version: 0.2.0
 Hash: cd78381a9d3fea966ac39bd0daaf5554
 
+Package: hexbin
+Source: CRAN
+Version: 1.27.1
+Hash: 378383b2c37556649fd6b2ee0be7e2a5
+Requires: lattice
+
+Package: highr
+Source: CRAN
+Version: 0.6
+Hash: aa3d5b7912b5fed4b546ed5cd2a1760b
+
+Package: htmltools
+Source: CRAN
+Version: 0.3.6
+Hash: eeba9fb36d4cb6cc66f060187102be41
+Requires: Rcpp, digest
+
+Package: htmlwidgets
+Source: CRAN
+Version: 0.9
+Hash: 7514f6ea9f3bef6d9b6c945095275302
+Requires: htmltools, jsonlite, yaml
+
+Package: httpuv
+Source: CRAN
+Version: 1.3.5
+Hash: e2d5ec877601df43efe66e9096d0fc93
+Requires: Rcpp
+
+Package: httr
+Source: CRAN
+Version: 1.2.1
+Hash: 7de1f8f760441881804af7c1ff324340
+Requires: R6, curl, jsonlite, mime, openssl
+
+Package: jsonlite
+Source: CRAN
+Version: 1.5
+Hash: 9c51936d8dd00b2f1d4fe9d10499694c
+
 Package: labeling
 Source: CRAN
 Version: 0.3
@@ -147,6 +237,7 @@ Hash: ecf589b42cd284b03a4beb9665482d3e
 Package: lattice
 Source: CRAN
 Version: 0.20-35
+Hash: 26b9d7f0d0cb4e1d1bbb97f867c82d89
 
 Package: lazyeval
 Source: CRAN
@@ -158,11 +249,22 @@ Source: CRAN
 Version: 1.5
 Hash: bdc4d48c3135e8f3b399536ddf160df4
 
+Package: markdown
+Source: CRAN
+Version: 0.8
+Hash: 045d7c594d503b41f1c28946d076c8aa
+Requires: mime
+
 Package: memoise
 Source: CRAN
 Version: 1.1.0
 Hash: 410fcd334bc626db100237cc1370f2e9
 Requires: digest
+
+Package: mime
+Source: CRAN
+Version: 0.5
+Hash: 463550cf44fb6f0a2359368f42eebe62
 
 Package: munsell
 Source: CRAN
@@ -175,6 +277,11 @@ Source: CRAN
 Version: 0.2.2
 Hash: dc3dbaaf3493c7ea43ff8a1523046c80
 Requires: tibble
+
+Package: openssl
+Source: CRAN
+Version: 0.9.6
+Hash: 5f4711e142a44655dfea4d64fcf2f641
 
 Package: packrat
 Source: github
@@ -195,6 +302,14 @@ Source: CRAN
 Version: 0.1-1
 Hash: fb19215402e2d9f1c7f803dcaa806fc2
 
+Package: plotly
+Source: CRAN
+Version: 4.7.0
+Hash: 4f41869540fd7fe9ec64a36a97ac8e4c
+Requires: RColorBrewer, base64enc, crosstalk, data.table, digest,
+    dplyr, ggplot2, hexbin, htmltools, htmlwidgets, httr, jsonlite,
+    lazyeval, magrittr, purrr, scales, tibble, tidyr, viridisLite
+
 Package: plyr
 Source: CRAN
 Version: 1.8.4
@@ -206,6 +321,12 @@ Source: CRAN
 Version: 2.0.7
 Hash: f28315a1c68bf391510b8ed285c096c6
 Requires: quadprog
+
+Package: purrr
+Source: CRAN
+Version: 0.2.2.2
+Hash: faada139260184912fea03f3fea13842
+Requires: Rcpp, lazyeval, magrittr, tibble
 
 Package: quadprog
 Source: CRAN
@@ -235,11 +356,29 @@ Source: CRAN
 Version: 0.1.1
 Hash: 86c53487ce7f82f0a7cc11c816060910
 
+Package: rprojroot
+Source: CRAN
+Version: 1.2
+Hash: fdcac51a7f47decd60556ceefc3c26b1
+Requires: backports
+
 Package: scales
 Source: CRAN
 Version: 0.4.1
 Hash: 6368a3249d52d20b366191e9349690b6
 Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
+
+Package: shiny
+Source: CRAN
+Version: 1.0.3
+Hash: f133585c72ea31592f663e68c6ff0b3e
+Requires: R6, digest, htmltools, httpuv, jsonlite, mime, sourcetools,
+    xtable
+
+Package: sourcetools
+Source: CRAN
+Version: 0.1.6
+Hash: 226d56d7469587da40b0f96180e711b4
 
 Package: stringi
 Source: CRAN
@@ -286,11 +425,21 @@ Source: CRAN
 Version: 0.2.0
 Hash: 10f0c25af3dc84eaae10f5854f47efdb
 
+Package: xtable
+Source: CRAN
+Version: 1.8-2
+Hash: 7293235cfcc14cdff1ce7fd1a0212031
+
 Package: xts
 Source: CRAN
-Version: 0.9-7
-Hash: fb3f81d7a2fa2323879b6b49722ddc5e
+Version: 0.10-0
+Hash: 03131e6ac5458d08143205a198284f18
 Requires: zoo
+
+Package: yaml
+Source: CRAN
+Version: 2.1.14
+Hash: c81230c3a7d9ba20607ad6b4331173d1
 
 Package: zoo
 Source: CRAN

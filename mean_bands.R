@@ -5,8 +5,10 @@
 
 
 mean_bands <- function(dat, interv, freq) {
-  
 
+  
+  if (missing(freq)) freq <- c(4,8,13,30,50)
+  
   interv <- as.numeric(interv)
  
   # Intervals used for the mean  -> mean_intervals (+1 so it does not start from 0)
@@ -34,11 +36,11 @@ mean_bands <- function(dat, interv, freq) {
   
   #Final-Subject-means-eeg
   fsmeans_eeg <- group_by_(dat, .dots = c(sel, "M_interval", "channel", "D_interval", "drug", "date", "subject"))
-  fsmeans_eeg <-  dplyr::summarise(fsmeans_eeg, Mean_PSD = mean(PSD),
+  fsmeans_eeg <-  dplyr::summarise(fsmeans_eeg, PSD_abs = mean(PSD),
                                                 n = n(), 
-                                                SD = sd(PSD),
-                                                SER = SD / sqrt(n),
-                                                Median_PSD = median(PSD)
+                                                PSD_abs_SD = sd(PSD),
+                                                PSD_abs_SER = PSD_abs_SD / sqrt(n),
+                                                PSD_median = median(PSD)
                                    )
   
   
