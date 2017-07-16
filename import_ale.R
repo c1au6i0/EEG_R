@@ -19,7 +19,7 @@ import_ale <- function ( fold ) {
   
 
   
-  alleeg  <-  Reduce(function(...) merge(..., all=T),   prova )
+  alleeg  <-  Reduce(function(...) merge(..., all = T),   prova )
   
   
   alleeg <- na.omit(alleeg)

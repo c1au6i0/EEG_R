@@ -7,11 +7,11 @@ library(dbplyr)
 
 mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite")
 
+dbListTables(mydb)
 
+alleeg <- dbGetQuery(mydb, 'SELECT * FROM ketamine')
 
-alleeg <- dbGetQuery(mydb, 'SELECT * FROM modafinil')
-
-# alleeg  <- tbl(mydb, "modafinil") 
+# alleeg  <- tbl(mydb, "ketamine") 
 
 
 alldoses <- as.numeric(unique(alleeg$D_interval[!alleeg$D_interval == "baseline"]))
@@ -24,13 +24,12 @@ setwd(choose.dir())
 
 
 
+unique(alleeg$subject)
 
 
+dbRemoveTable(mydb, "ketamine")
 
-
-
-getwd()
-
+dbWriteTable(mydb, "ketamine", alleeg)
 
 
 

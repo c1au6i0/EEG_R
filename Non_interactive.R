@@ -2,11 +2,21 @@
 # load packages and scripts
 source("J:/EEG data/EEG_R/start.R")
 
-
+# Use this to import those stupid cvs
 imp <- import_ale(choose.dir())
 
 
+# Use this to import from database
+# # imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = "cocaine")
+# setwd(choose.dir())
+
+
 list2env(imp, .GlobalEnv )
+
+
+
+
+
 
 # alleeg$subject <- droplevels(alleeg$subject)
 
@@ -29,7 +39,7 @@ by(alleeg2, alleeg2$subject, fheatmap, subt = subt, seqbreaks = seqbreaks)
   
 #------------------------------------------------------------------------
 
-alleeg2 <- remcorr2(alleeg2)
+# alleeg2 <- remcorr2(alleeg2)
 
 
 nl_alleeg2 <- no_lateral(dat = alleeg2) 
@@ -51,9 +61,7 @@ fsmeans_eeg <- mapply(mean_bands, list(alleeg2, alleeg2, nl_alleeg2, nl_alleeg2)
                       )
 
 
-
-                                   
-
+#Percent baseline by subject
 fsperc_eeg  <- lapply(fsmeans_eeg, percent_baseline, 
                       groupby = c ("Bands", "channel", "subject"),
                       basel = "drug_dose", variab = "PSD_abs", 
@@ -62,7 +70,6 @@ fsperc_eeg  <- lapply(fsmeans_eeg, percent_baseline,
 
 
 # plots allsubj abs
-
 lapply(fsperc_eeg, point_graph2_s,
        yaes = "PSD_abs",
        lerr= "PSD_abs_SER",
@@ -76,7 +83,6 @@ lapply(fsperc_eeg, point_graph2_s,
 
 
 # plots allsubj perc
-
 lapply(fsperc_eeg, point_graph2_s,
        yaes = "PSD_perc",
        perc = "yes",
@@ -87,12 +93,10 @@ lapply(fsperc_eeg, point_graph2_s,
 )
 
 
-
-
 fgperc_eeg  <- lapply(fsperc_eeg,  group_mean )
 
-# plots all group mean perc
 
+# plots all group mean perc
 lapply(fgperc_eeg, point_graph2,
        yaes = "PSD_perc",
        lerr= "PSD_perc_SER",
@@ -103,8 +107,8 @@ lapply(fgperc_eeg, point_graph2,
        seqbreaks = seqbreaks
 )
 
-# plots all group mean abs
 
+# plots all group mean abs
 lapply(fgperc_eeg, point_graph2,
        yaes = "PSD_abs",
        lerr= "PSD_abs_SER",
@@ -114,9 +118,8 @@ lapply(fgperc_eeg, point_graph2,
        seqbreaks = seqbreaks
 )
 
+
 # plots all group mean jitter
-
-
 lapply(fsperc_eeg, jitterplot,
        yaes = "PSD_perc",
        perc = "yes",
@@ -125,3 +128,5 @@ lapply(fsperc_eeg, jitterplot,
        sel = "Bands",
        seqbreaks = seqbreaks
 )
+
+   
