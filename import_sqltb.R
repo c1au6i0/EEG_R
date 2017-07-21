@@ -12,7 +12,7 @@ import_sqltb  <- function( dbp, tab) {
   
   alleeg  <- tbl(mydb, tab)
   
-  aleeg <- as.data.frame(alleeg)
+  alleeg <- as.data.frame(alleeg)
   
   alldoses <- as.numeric(unique(alleeg$D_interval[!alleeg$D_interval == "baseline"]))
   

@@ -3,7 +3,6 @@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 
 fheatmap <- function (x, subt, seqbreaks) { 
-
   gtitle <- paste0( x$date[1]," ",  x$subject[1], " ", drug ) 
   grapheat <-
     ggplot(x, aes(time_sec/60, frequency_eeg)) +

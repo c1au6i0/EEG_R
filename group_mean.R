@@ -6,7 +6,7 @@ group_mean <- function (dat, forB) {
   
   
   
-  fmeans_eeg <- group_by(dat, .dots = c(forB, "intervals_sec", "channel", " drug_dose", "drug"))
+  fmeans_eeg <- group_by(dat, .dots = c(forB, "intervals_sec", "channel", "drug_dose", "drug"))
   
 
 

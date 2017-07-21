@@ -13,7 +13,7 @@
 
 point_graph2 <- function(df, yaes, lerr, perc, sp, sel, subt2, seqbreaks) {
   
-  
+
 
   #sp size points
   if (missing(sp) || sp == "A") {  sp <- (17/(max(df$intervals_sec)/df$intervals_sec[1])) }
@@ -49,7 +49,7 @@ point_graph2 <- function(df, yaes, lerr, perc, sp, sel, subt2, seqbreaks) {
     ylab <- paste0(ylab, "(db)")
   } else {
     prefix <- "Perc_"
-    ylab <- "PSD Percent Baseline"
+    # ylab <- "PSD Percent Baseline"
   }
   
   # title changes depending on subject/ group
@@ -60,8 +60,11 @@ point_graph2 <- function(df, yaes, lerr, perc, sp, sel, subt2, seqbreaks) {
     prefix <- paste0(prefix,"GROUP_")
   }
   
+
   
+
   # reordering levels of drug dose so that baseline is the first  
+  df$drug_dose <- as.character(df$drug_dose)
   df$drug_dose <- factor(df$drug_dose, levels = append("baseline", unique(df$drug_dose)[!unique(df$drug_dose) == "baseline"]))
 
 

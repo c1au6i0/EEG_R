@@ -22,18 +22,22 @@ baseline_int <- as.numeric( alleeg$baseline[1] )*60
 setwd(choose.dir())
 
 
-
+db_re
 
 unique(alleeg$subject)
 
 
-dbRemoveTable(mydb, "ketamine")
+dbRemoveTable(mydb, "Modafinil")
 
-dbWriteTable(mydb, "ketamine", alleeg)
+dbWriteTable(mydb, "modafinil", alleeg2)
 
 
 
 dbWriteTable(mydb, paste(drug), alleeg2)
+
+db_list_tables(mydb)
+
+db_drop_table(mydb, paste(drug))
 
 
 dbListTables(mydb)
@@ -43,4 +47,12 @@ setOldClass(c("grouped_df", "tbl_df", "data.frame"))
 cocaine_db <- tbl(mydb, "cocaine")
 
 
+db
+
+
+# change name table
+#  https://stackoverflow.com/questions/42235110/how-to-rename-a-sqlite-table-with-dplyr
+q <- "ALTER TABLE mtcars2 RENAME TO mtcars3"
+
+DBI:::dbSendQuery(db$con, sql(q))
 

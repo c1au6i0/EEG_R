@@ -1,4 +1,4 @@
-# import
+# import data from Ale csv and add dose colunmn
 
 import_ale <- function ( fold ) {
   
@@ -14,12 +14,12 @@ import_ale <- function ( fold ) {
   file <- file[!file %in% nread]
   
 
-  prova <- lapply (file, function (x) read.csv( x , header = TRUE, sep = "," ))
+  prova <- pblapply(file, function (x) read.csv( x , header = TRUE, sep = "," ))
   
   
 
   
-  alleeg  <-  Reduce(function(...) merge(..., all = T),   prova )
+  alleeg  <-  Reduce(function(...) merge(..., all=T),   prova )
   
   
   alleeg <- na.omit(alleeg)

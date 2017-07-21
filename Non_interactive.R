@@ -1,3 +1,5 @@
+# Comands to create graphs...
+#
 
 # load packages and scripts
 source("J:/EEG data/EEG_R/start.R")
@@ -7,7 +9,7 @@ imp <- import_ale(choose.dir())
 
 
 # Use this to import from database
-# # imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = "cocaine")
+# imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = "methylphenidate")
 # setwd(choose.dir())
 
 
@@ -39,7 +41,7 @@ by(alleeg2, alleeg2$subject, fheatmap, subt = subt, seqbreaks = seqbreaks)
   
 #------------------------------------------------------------------------
 
-# alleeg2 <- remcorr2(alleeg2)
+alleeg2 <- remcorr2(alleeg2)
 
 
 nl_alleeg2 <- no_lateral(dat = alleeg2) 
@@ -93,7 +95,7 @@ lapply(fsperc_eeg, point_graph2_s,
 )
 
 
-fgperc_eeg  <- lapply(fsperc_eeg,  group_mean )
+fgperc_eeg  <- pblapply(fsperc_eeg,  group_mean )
 
 
 # plots all group mean perc
@@ -129,4 +131,14 @@ lapply(fsperc_eeg, jitterplot,
        seqbreaks = seqbreaks
 )
 
+
+# plots all group mean jitter
+lapply(fsperc_eeg, jitterplot,
+       yaes = "PSD_abs",
+        perc = "no",
+       sp= "A",
+       subt2 = subt,
+       sel = "Bands",
+       seqbreaks = seqbreaks
+)
    

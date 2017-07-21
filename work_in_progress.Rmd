@@ -1,0 +1,58 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+
+
+  
+  cocaine <- read.csv(file.choose(), sep = ",", header = TRUE)
+  
+  front_nolat <- dt[grep("*prism", dt)]
+  
+  front_nolat <- lapply(front_nolat, get)
+  
+  allprism <- do.call("rbind", front_nolat)
+  
+
+  
+
+  forprism <- dbGetQuery(mydb, 'SELECT * FROM forprism')
+  
+  forprism<- rbind (forprism, cocaine[, 2: length(names(cocaine))])
+
+  
+    
+```
+
+This part is for select the data of the largest dose of each drug experiment
+
+```{r}
+
+forprism <- dplyr::filter(forprism, drug_dose != "baseline")
+
+forprism$drug_dose <-  as.numeric(forprism$drug_dose)
+
+datstellar <- by(forprism, forprism$drug, function (x) dplyr::filter(x, drug_dose == max(drug_dose) ))
+
+  datstellar  <-  Reduce(function(...) merge(..., all=T),   datstellar  )
+  
+   dbWriteTable(mydb, "datstellar", datstellar)
+
+```
+
+
+
+This is an example of radarplot taken from [here](http://www.r-graph-gallery.com/142-basic-radar-chart/)
+```{r}
+
+
+datstellar_long <- tidyr::spread(datstellar[, c(1:5,11)], Bands, PSD_perc, drop = T )
+datstellar_long$drug
+
+write.csv(datstellar_long, "datstellar_long.csv")
+ 
+```
+

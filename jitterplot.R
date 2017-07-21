@@ -43,7 +43,10 @@ jitterplot <- function(df, yaes, perc, sp, sel, subt2, seqbreaks) {
   
   
   # reordering levels of drug dose so that baseline is the first  
+  # reordering levels of drug dose so that baseline is the first  
+  df$drug_dose <- as.character(df$drug_dose)
   df$drug_dose <- factor(df$drug_dose, levels = append("baseline", unique(df$drug_dose)[!unique(df$drug_dose) == "baseline"]))
+
   
 
   jitterplot <-
