@@ -28,7 +28,7 @@ alleeg2 <-  equal_sub(alleeg, interv = 300)
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
-  # Heatmaps ----------------------------------------------------------------
+# Heatmaps ----------------------------------------------------------------
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 
 subt <- paste0("doses = ", paste(round(alldoses, 3), collapse = ", "), 
@@ -38,10 +38,10 @@ seqbreaks <- seq(0, max(alleeg$time_sec/60), by = injection_int/60)
 
 
 by(alleeg2, alleeg2$subject, fheatmap, subt = subt, seqbreaks = seqbreaks)  
-  
+
 #------------------------------------------------------------------------
 
-alleeg2 <- remcorr2(alleeg2)
+# alleeg2 <- remcorr2(alleeg2)
 
 
 nl_alleeg2 <- no_lateral(dat = alleeg2) 
@@ -51,7 +51,7 @@ nl_alleeg2 <- no_lateral(dat = alleeg2)
 freq <-   c(4,8,13,30,50)
 
 
- # point_graph2(df = as.data.frame(fgperc_eeg[4]),  yaes = "PSD_abs", lerr= "Abs_SER", sp= "A", subt2 = subt, sel = "Bands", seqbreaks = seqbreaks)
+# point_graph2(df = as.data.frame(fgperc_eeg[4]),  yaes = "PSD_abs", lerr= "Abs_SER", sp= "A", subt2 = subt, sel = "Bands", seqbreaks = seqbreaks)
 # point_graph2(df = fgperc_eeg,  yaes = "Mean_abs", lerr= "Abs_SER", sp= "A", subt2 = subt, sel = "Bands", seqbreaks = seqbreaks)
 
 
@@ -60,7 +60,7 @@ fsmeans_eeg <- mapply(mean_bands, list(alleeg2, alleeg2, nl_alleeg2, nl_alleeg2)
                       rep(c(60, 300),2), 
                       rep(list(freq), 4),
                       SIMPLIFY = FALSE
-                      )
+)
 
 
 #Percent baseline by subject
@@ -79,9 +79,9 @@ lapply(fsperc_eeg, point_graph2_s,
        subt2 = subt,
        sel = "Bands",
        seqbreaks = seqbreaks
-       )
+)
 
- # names(as.data.frame(fgperc_eeg[1]))
+# names(as.data.frame(fgperc_eeg[1]))
 
 
 # plots allsubj perc
@@ -135,10 +135,9 @@ lapply(fsperc_eeg, jitterplot,
 # plots all group mean jitter
 lapply(fsperc_eeg, jitterplot,
        yaes = "PSD_abs",
-        perc = "no",
+       perc = "no",
        sp= "A",
        subt2 = subt,
        sel = "Bands",
        seqbreaks = seqbreaks
 )
-   
