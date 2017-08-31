@@ -3,6 +3,7 @@
 
 no_lateral <- function (dat) {
   
+  dat <- as.data.frame(dat)
 
   dat[,"channel"] <-  plyr::revalue(  dat[,"channel"] , c("EEG_FL" = "EEG_FRONT", 
                                                    "EEG_FR" = "EEG_FRONT",

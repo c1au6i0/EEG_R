@@ -1,5 +1,5 @@
+# load packages and scripts
 source("J:/EEG data/EEG_R/start.R")
-
 
 setwd(choose.dir())
 dirs <- basename(list.dirs())
@@ -12,14 +12,14 @@ file <- file[!file %in% nread]
 
 
 # list of files to import
-RAT20 <- pblapply(file, function (x) read.csv( x , header = TRUE, sep = "," ))
+RAT24 <- pblapply(file, function (x) read.csv( x , header = TRUE, sep = "," ))
 
-names(RAT20) <- LETTERS[1: length(RAT20)]
+names(RAT24) <- LETTERS[1: length(RAT24)]
 
-# max(RAT20_A$Time)
+# max(RAT24_A$Time)
 
 # starting times
-stl <- c("170718_143840", "170718_145702", "170718_152357", "170718_153002")
+stl <- c("170822_150944", "170822_161814")
 
 # trasform in format Posixcl
 st_time <- lapply(stl, function (x) strptime(x, format = "%y%m%d_%H%M%S"))
@@ -35,10 +35,10 @@ time_dif <- function (a, b) {
 }
 
 # time that needs to be added  
-toadd  <- mapply (time_dif, st_time[2:4], rep(st_time[1],3))
+toadd  <- mapply (time_dif, st_time[2:length(st_time)], rep(st_time[1],length(st_time) - 1))
 
 # round up
-toadd  <- ceiling(toadd/5)*5
+toadd  <- ceiling(toadd/10)*10
 
 
 
@@ -51,20 +51,24 @@ addtime <-  function (x, y) {
 }
 
 
+#add time to each of the elments of the list of interrupted sessions
 prova     <-  mapply ( addtime,
-              RAT20[2:length(RAT20)],
+              RAT24[2:length(RAT24)],
               toadd,
               SIMPLIFY = FALSE
      )
 
        
-RAT20_int <- Reduce(function(...) merge(..., all=T),   prova )
+RAT24_int <- Reduce(function(...) merge(..., all=T),   prova )
 
 
-RAT20_int <- rbind(RAT20$A, RAT20_int)
+RAT24_int <- rbind(RAT24$A, RAT24_int)
 
-write.csv (RAT20_int, file = "RAT20_int.csv", row.names = F)
+write.csv (RAT24_int, file = "RAT24_int.csv", row.names = F)
+
+tail(RAT24$A$Time)
+head(RAT24_int$Time)
 
 
 
-
+rm(list = ls()[!ls() %in% "RAT24_int"])

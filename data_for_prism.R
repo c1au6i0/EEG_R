@@ -1,10 +1,11 @@
 # load packages and scripts
 # few comands to subset the database and take the data used for Prism dose-effect curves
+######ATTENTION NEEDS TO BE DEBUGGED#####################
+
 source("J:/EEG data/EEG_R/start.R")
 
-
 # Use this to import from database
-imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = "ketamine")
+imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = "JHW007")
 
 
 
@@ -30,14 +31,14 @@ fsperc_eeg  <- percent_baseline(
                         )
 fgperc_eeg  <- as.data.frame(group_mean(fsperc_eeg))
 
-int <- seq(3, 93, 30) * 60
+int <- seq(30, 120, 30) * 60
            
            
-ketamine_prism <- fgperc_eeg %>% 
+JHW007_prism <- fgperc_eeg %>% 
           dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int)
 
-ketamine_prism
+setwd(choose.dir())
 
-write.csv(ketamine_prism, file = "ketamine_prism.csv")
+write.csv(JHW007_prism, file = "JHW007_prism.csv")
 
 rm(alleeg)

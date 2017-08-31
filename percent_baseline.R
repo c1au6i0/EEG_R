@@ -11,7 +11,7 @@
 
 
 percent_baseline <- function(df, groupby, basel, variab , form, oper, namen) {
-  
+
   if(missing(form)) form <- "mean"
   
   df <- as.data.frame(df)

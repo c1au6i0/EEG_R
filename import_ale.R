@@ -16,11 +16,10 @@ import_ale <- function ( fold ) {
 
   prova <- pblapply(file, function (x) read.csv( x , header = TRUE, sep = "," ))
   
-  
 
-  
   alleeg  <-  Reduce(function(...) merge(..., all=T),   prova )
   
+  # alleeg$route <- "iv"
   
   alleeg <- na.omit(alleeg)
   
@@ -58,6 +57,9 @@ import_ale <- function ( fold ) {
   injection_int <- as.numeric( alleeg$injection_int[1] )*60
   baseline_int <- as.numeric( alleeg$baseline[1] )*60
   
+  # alleeg[,"baseline"] <- 30
+  # baseline_int <- 1800
+  
   
   
   while (!"Doses.csv" %in% list.files(include.dirs=FALSE)) {
@@ -69,8 +71,7 @@ import_ale <- function ( fold ) {
   alldoses <- scan( "Doses.csv" ,  sep = "," )
   
   alldoses <- as.numeric(alldoses)
-  
-  
+
   
   # Every dose interval we have a different dose but the first injection was given at baseline interval so:
   injection_time <- as.numeric( c( 0, baseline_int, baseline_int + seq_along(alldoses)* injection_int ) )

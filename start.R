@@ -5,6 +5,7 @@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 to_load  <- list( "colorspace",
                   "DBI",
+                  "plyr",
                   "dbplyr",
                   "dplyr",
                   "ggplot2",
@@ -12,7 +13,6 @@ to_load  <- list( "colorspace",
                   "magrittr",
                   "packrat",
                   "pbapply",
-                  "plyr",
                   "RSQLite",
                   "scales",
                   "svDialogs",
@@ -24,7 +24,7 @@ lapply(to_load, require, character.only = TRUE)
 
 setwd("J:/EEG data/EEG_R")
 ufunc <- list( "fheatmap.R",
-               "group_mean.R",
+               "chan_group_mean.R",
                "equal_sub.R",
                "import_ale.R",
                "import_sqltb.R", 
