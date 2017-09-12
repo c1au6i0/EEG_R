@@ -21,28 +21,8 @@ drug <- alleeg$drug[1]
 injection_int <- as.numeric( alleeg$injection_int[1] )*60
 baseline_int <- as.numeric( alleeg$baseline[1] )*60
 
-setwd(choose.dir())
 
 
 
-
-unique(alleeg$subject)
-
-
-dbRemoveTable(mydb, "RAT16_24_JHW007")
-
-dbWriteTable(mydb, "heroin", alleeg)
-
-
-
-dbWriteTable(mydb, paste(drug), alleeg2)
-
-
-dbListTables(mydb)
-
-
-setOldClass(c("grouped_df", "tbl_df", "data.frame"))
-cocaine_db <- tbl(mydb, "cocaine")
-
-
+dbWriteTable(mydb, 'morphineld_naltrexone', alleeg2)
 

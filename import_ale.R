@@ -49,6 +49,7 @@ import_ale <- function ( fold ) {
   exp_type <- alleeg$experiment[1]
   
   alleeg$date <- as.character(alleeg$date)
+
   alleeg$route <- "iv"
   
   
