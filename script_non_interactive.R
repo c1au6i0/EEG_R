@@ -2,7 +2,7 @@
 #
 
 # load packages and scripts
-source("J:/EEG data/EEG_R/start.R")
+source("J:/EEG data/EEG_R/script_start.R")
 
 # Use this to import those stupid cvs
 imp <- import_ale(choose.dir())
