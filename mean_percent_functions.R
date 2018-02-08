@@ -117,7 +117,7 @@ percent_baseline <- function(df, groupby, basel, variab , form, oper, namen) {
   # namen = name of the new created column with the fourmula.
   #  form = formula to summarize the baseline, default is mean
   # oper = formula to use to expresse variab as function of baseline express in baseline (/*-+) Mean_PSD or viceversa
-  
+
   
   if(missing(form)) form <- "mean"
   

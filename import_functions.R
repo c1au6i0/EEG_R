@@ -49,7 +49,7 @@ import_ale <- function ( fold ) {
   f_max <- max( alleeg$frequency_eeg )
   exp_type <- alleeg$experiment[1]
   
-  alleeg$date <- as.character(alleeg$date)
+  alleeg$date <- as.character( alleeg$date )
 
   alleeg$route <- "iv"
   

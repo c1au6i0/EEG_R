@@ -1,5 +1,5 @@
 # load packages and scripts
-source("J:/EEG data/EEG_R/start.R")
+source("J:/EEG data/EEG_R/script_start.R")
 
 setwd(choose.dir())
 dirs <- basename(list.dirs())
@@ -12,14 +12,14 @@ file <- file[!file %in% nread]
 
 
 # list of files to import
-RAT19 <- pblapply(file, function (x) read.csv( x , header = TRUE, sep = "," ))
+RAT <- pblapply(file, function (x) read.csv( x , header = TRUE, sep = "," ))
 
-names(RAT19) <- LETTERS[1: length(RAT19)]
+names(RAT) <- LETTERS[1: length(RAT)]
 
-# max(RAT19_A$Time)
+# max(RAT_A$Time)
 
 # starting times
-stl <- c("170825_144917", "170825_163323")
+stl <- c("180123_133925", "180123_134803", "180123_135114")
 
 # trasform in format Posixcl
 st_time <- lapply(stl, function (x) strptime(x, format = "%y%m%d_%H%M%S"))
@@ -53,22 +53,23 @@ addtime <-  function (x, y) {
 
 #add time to each of the elments of the list of interrupted sessions
 prova     <-  mapply ( addtime,
-              RAT19[2:length(RAT19)],
+              RAT[2:length(RAT)],
               toadd,
               SIMPLIFY = FALSE
      )
 
        
-RAT19_int <- Reduce(function(...) merge(..., all=T),   prova )
+RAT_int <- Reduce(function(...) merge(..., all=T),   prova )
 
 
-RAT19_int <- rbind(RAT19$A, RAT19_int)
+RAT_int <- rbind(RAT$A, RAT_int)
 
-write.csv (RAT19_int, file = "RAT20_int.csv", row.names = F)
+write.csv (RAT_int, file = "RAT_int.csv", row.names = F)
 
-tail(RAT19$A$Time)
-head(RAT19_int$Time)
+tail(RAT$A$Time)
+head(RAT$B$Time)
+head(RAT_int$Time)
+plot(unique(RAT_int$Time), seq_along(unique(RAT_int$Time)), type = "l")
 
 
-
-rm(list = ls()[!ls() %in% "RAT19_int"])
+rm(list = ls()[!ls() %in% "RAT_int"])

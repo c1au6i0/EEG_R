@@ -16,11 +16,12 @@ imp <- import_ale(choose.dir())
 list2env(imp, .GlobalEnv )
 
 
-# alleeg$subject <- droplevels(alleeg$subject)
+alleeg$subject <- droplevels(alleeg$subject)
+
 
 
 alleeg2 <-  equal_sub(alleeg, interv = 300)
-
+alleeg2 <- na.omit(alleeg2)
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 # Heatmaps ----------------------------------------------------------------
@@ -32,11 +33,11 @@ subt <- paste0("doses = ", paste(round(alldoses, 3), collapse = ", "),
 seqbreaks <- seq(0, max(alleeg$time_sec/60), by = injection_int/60)
 
 
-# by(alleeg2, alleeg2$subject, fheatmap, subt = subt, seqbreaks = seqbreaks)  
+by(alleeg2, alleeg2$subject, fheatmap, subt = subt, seqbreaks = seqbreaks)  
 
 #------------------------------------------------------------------------
 
-# alleeg2 <- remcorr2(alleeg2)
+#alleeg2 <- remcorr2(alleeg2)
 
 
 nl_alleeg2 <- no_lateral(dat = alleeg2) 
@@ -134,4 +135,13 @@ lapply(fsperc_eeg, jitterplot,
        seqbreaks = seqbreaks
 )
 
+# plots all group mean jitter
+lapply(fsperc_eeg, jitterplot,
+       yaes = "PSD_abs",
+       perc = "no",
+       sp= "A",
+       subt2 = subt,
+       sel = "Bands",
+       seqbreaks = seqbreaks
+)
 

@@ -4,6 +4,7 @@ library(DBI)
 library(RSQLite)
 library(dplyr)
 library(dbplyr)
+library(pragma)
 
 mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite")
 
@@ -24,5 +25,13 @@ baseline_int <- as.numeric( alleeg$baseline[1] )*60
 
 
 
-dbWriteTable(mydb, 'morphineld_naltrexone', alleeg2)
+dbWriteTable(mydb, 'cocaine+10JHW007', alleeg2)
 
+dbRemoveTable(mydb, "saline3")
+
+dbGetQuery(mydb, 'SELECT *
+                  FROM morphineld
+                  ORDER BY ROWID ASC LIMIT 1')
+
+
+db_list_tables(mydb)
