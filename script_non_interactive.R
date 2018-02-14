@@ -13,6 +13,7 @@ imp <- import_ale(choose.dir())
 # setwd(choose.dir())
 
 
+
 list2env(imp, .GlobalEnv )
 
 
