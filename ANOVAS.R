@@ -1,6 +1,8 @@
 install.packages("multcomp")
 install.packages("nmle")
 
+
+
 prism <- forprisms %>% 
   dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int)
 
@@ -12,6 +14,8 @@ prism$drug_dose <- as.factor(prism$drug_dose)
 
 library(multcomp)
 library(nlme)
+library(purrr)
+library(stringr)
 
 
 analisi <- function (x) {
@@ -22,7 +26,7 @@ repmesure<- by(prism, prism$Bands, analisi)
 
 anova_output <- map(repmesure, anova)
 
-
+capture.output(anova_output, file = "analisi.txt", append = T)
 
 calc_posthocs <- function (x) {
   
@@ -39,27 +43,27 @@ calc_posthocs <- function (x) {
   basel_posthoc
   
 }
+posthocs <-  map(repmesure, calc_posthocs)
 
-
-map(repmesure, calc_posthocs)
-
-
-
-prism$drug_dose <- as.factor(prism$drug_dose)
-fitp <- lme(PSD_perc ~ drug_dose, data=prism, random = ~1|subject)
-anova(fitp)
-
-posthocs <- summary(glht(fitp, linfct=mcp(drug_dose = "Tukey")))
-
-
-
-posthocs <- as.data.frame(posthocs$test[3:6])
-posthocs["sign"] <- "no"
-posthocs$sign[which(posthocs$pvalues <= 0.05)] <- "yes"
-
-to_extr <- str_detect(row.names(posthocs), "[b]")
-
-basel_posthoc <-posthocs[to_extr,]
-
-basel_posthoc
-
+capture.output(posthocs , file = "analisi.txt", append = T)
+# 
+# map(unlist(posthocs), write.csv, "analisi.csv")
+# 
+# prism$drug_dose <- as.factor(prism$drug_dose)
+# fitp <- lme(PSD_perc ~ drug_dose, data=prism, random = ~1|subject)
+# anova(fitp)
+# 
+# posthocs <- summary(glht(fitp, linfct=mcp(drug_dose = "Tukey")))
+# 
+# 
+# 
+# posthocs <- as.data.frame(posthocs$test[3:6])
+# posthocs["sign"] <- "no"
+# posthocs$sign[which(posthocs$pvalues <= 0.05)] <- "yes"
+# 
+# to_extr <- str_detect(row.names(posthocs), "[b]")
+# 
+# basel_posthoc <-posthocs[to_extr,]
+# 
+# basel_posthoc
+# 

@@ -5,8 +5,10 @@
 
 source("J:/EEG data/EEG_R/script_start.R")
 
+
+tbdrug <- "-JBG01049"
 # Use this to import from database
-imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = "cocaine")
+imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = tbdrug)
 
 
 
@@ -68,19 +70,20 @@ forprisms  <- as.data.frame(fsperc_eeg [4])
 
 
 # first interval to take, last interval and interinterval time in min
-int <- seq(10, 50, 10) * 60
+int <- seq(30, 150, 30) * 60
       
 int
 
+
 prism <- forprisms %>% 
-          dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int & Bands == "Beta")
+          dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int & Bands ==  "Beta")
 
 
 prismg <- forprismg %>% 
-  dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int & Bands == "Delta")
+  dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int & Bands == "Beta")
 
 
-# plot(prism$intervals_sec, prism$PSD_perc)
+plot(prismg$intervals_sec, prismg$PSD_perc, type = "p")
 
 # setwd("J:\\EEG data\\Claudio output files\\for prism")
 
