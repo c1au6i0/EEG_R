@@ -9,19 +9,22 @@ imp <- import_ale(choose.dir())
 
 
 # Use this to import from database
-#imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = "saline")
+# imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = "methylphenidate")
+
 # setwd(choose.dir())
 
 
 
 list2env(imp, .GlobalEnv )
 
-
+# alleeg$route <- "iv"
 alleeg$subject <- droplevels(alleeg$subject)
 
 
 
 alleeg2 <-  equal_sub(alleeg, interv = 300)
+
+
 alleeg2 <- na.omit(alleeg2)
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
@@ -38,7 +41,7 @@ by(alleeg2, alleeg2$subject, fheatmap, subt = subt, seqbreaks = seqbreaks)
 
 #------------------------------------------------------------------------
 
-#alleeg2 <- remcorr2(alleeg2)
+# alleeg2 <- remcorr2(alleeg2)
 
 
 nl_alleeg2 <- no_lateral(dat = alleeg2) 

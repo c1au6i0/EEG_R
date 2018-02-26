@@ -35,11 +35,11 @@ mean_bands <- function(dat, interv, freq) {
   
   #Final-Subject-means-eeg
   fsmeans_eeg <- group_by_(dat, .dots = c(sel, "M_interval", "channel", "D_interval", "drug", "date", "subject"))
-  fsmeans_eeg <-  dplyr::summarise(fsmeans_eeg, PSD_abs = mean(PSD),
+  fsmeans_eeg <-  dplyr::summarise(fsmeans_eeg, PSD_abs = mean(PSD, na.rm = T),
                                                 n = n(), 
-                                                PSD_abs_SD = sd(PSD),
+                                                PSD_abs_SD = sd(PSD, na.rm = T),
                                                 PSD_abs_SER = PSD_abs_SD / sqrt(n),
-                                                PSD_median = median(PSD)
+                                                PSD_median = median(PSD, na.rm = T)
                                    )
   
   
@@ -80,13 +80,13 @@ chan_group_mean <- function (dat, groupby) {
   
   
   x <- dplyr::summarise(fmeans_eeg, 
-                        PSD_abs2 = mean(PSD_abs),
+                        PSD_abs2 = mean(PSD_abs, na.rm = T),
                         n2 = n(),
-                        PSD_abs_SD2 = sd(PSD_abs),
+                        PSD_abs_SD2 = sd(PSD_abs,na.rm = T),
                         PSD_abs_SER2 = PSD_abs_SD2  / sqrt(n()),
-                        PSD_Median2 = median(PSD_abs),
-                        PSD_Perc2 = mean(PSD_perc),
-                        Perc_SD2 = sd(PSD_perc),
+                        PSD_Median2 = median(PSD_abs, na.rm = T),
+                        PSD_Perc2 = mean(PSD_perc, na.rm = T),
+                        Perc_SD2 = sd(PSD_perc, na.rm = T),
                         Perc_SER2 = Perc_SD2/ sqrt(n())
   )
   
@@ -116,7 +116,7 @@ percent_baseline <- function(df, groupby, basel, variab , form, oper, namen) {
   # vars = column containing  the continous variable to apply the func
   # namen = name of the new created column with the fourmula.
   #  form = formula to summarize the baseline, default is mean
-  # oper = formula to use to expresse variab as function of baseline express in baseline (/*-+) Mean_PSD or viceversa
+  # oper = formula to use to express variab as function of baseline express in baseline (/*-+) Mean_PSD or viceversa
 
   
   if(missing(form)) form <- "mean"
@@ -148,7 +148,7 @@ percent_baseline <- function(df, groupby, basel, variab , form, oper, namen) {
   
   
   
-  out <-  dplyr::arrange_(data.frame(ungroup(df)), .dots =groupby)
+  out <-  dplyr::arrange_(data.frame(ungroup(df)), .dots = groupby)
   
   
 

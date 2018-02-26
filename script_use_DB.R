@@ -10,7 +10,7 @@ mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite")
 
 dbListTables(mydb)
 
-alleeg <- dbGetQuery(mydb, 'SELECT * FROM ketamine')
+# <- dbGetQuery(mydb, 'SELECT * FROM cocaine')
 
 toadd <- dbGetQuery(mydb, 'SELECT * FROM RAT16_24_JHW007')
 
@@ -23,15 +23,20 @@ injection_int <- as.numeric( alleeg$injection_int[1] )*60
 baseline_int <- as.numeric( alleeg$baseline[1] )*60
 
 
+dbWriteTable(mydb, 'methylphenidate', alleeg2)
 
-
-dbWriteTable(mydb, 'cocaine+10JHW007', alleeg2)
+dbWriteTable(mydb, 'allfront_nl', prism)
 
 dbRemoveTable(mydb, "saline3")
 
-dbGetQuery(mydb, 'SELECT *
-                  FROM morphineld
-                  ORDER BY ROWID ASC LIMIT 1')
+ prova <- dbGetQuery(mydb, 'SELECT *
+                  FROM allfront_nl')
+
+
+                  WHERE  drug = "cocaine" ')
+
+
+                  ORDER BY ROWID ASC LIMIT 300')
 
 
 db_list_tables(mydb)

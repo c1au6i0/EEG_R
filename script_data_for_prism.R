@@ -6,7 +6,8 @@
 source("J:/EEG data/EEG_R/script_start.R")
 
 
-tbdrug <- "-JBG01049"
+
+tbdrug <- "methylphenidate"
 # Use this to import from database
 imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = tbdrug)
 
@@ -16,7 +17,7 @@ list2env(imp, .GlobalEnv )
 
 
 # setwd( "J:\\EEG data\\Claudio output files\\for prism")
-
+alleeg2 <- na.omit(alleeg)
 
 # Means##################################################
 alleeg2 <-  equal_sub(alleeg, interv = 300)
@@ -70,7 +71,7 @@ forprisms  <- as.data.frame(fsperc_eeg [4])
 
 
 # first interval to take, last interval and interinterval time in min
-int <- seq(30, 150, 30) * 60
+int <- seq(10, 60, 10) * 60
       
 int
 
@@ -80,14 +81,17 @@ prism <- forprisms %>%
 
 
 prismg <- forprismg %>% 
-  dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int & Bands == "Beta")
+  dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int & Bands ==  "Beta")
 
 
 plot(prismg$intervals_sec, prismg$PSD_perc, type = "p")
 
+prismg <- forprismg %>% 
+  dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int)
+
 # setwd("J:\\EEG data\\Claudio output files\\for prism")
 
-# write.csv(saline_prism , file = "saline_prism.csv")
+write.csv(prismg , file = "J:\\EEG data\\Claudio output files\\for prism\\methylphenidate2_prism.csv")
 
 # prova <- prism %>% 
   # select(UQ(c("subject", "Bands","intervals_sec", "drug_dose", "PSD_perc"))) %>%
