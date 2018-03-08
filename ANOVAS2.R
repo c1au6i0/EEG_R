@@ -1,12 +1,10 @@
 # install.packages("multcomp")
 # install.packages("nmle")
 
-library(multcomp)
-library(nlme)
-library(purrr)
-library(stringr)
-
-tbdrug <- "methylphenidate"
+# source("J:/EEG data/EEG_R/script_start.R")
+# # Use this to import from database
+# tbdrug <- "cocaine"
+# imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = tbdrug)
 
 # setwd("C:\\Users\\zanettinic\\Desktop\\Analysis")
 
@@ -14,21 +12,11 @@ prism <- forprisms %>%
   dplyr::filter(channel == "EEG_FRONT" & 
                   intervals_sec %in% int)
 
-mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite")
-
-dbWriteTable(mydb, "allfront", prism)
-dbDisconnect(mydb)
-
-# prismg <- forprismg %>% 
-#   dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int)
+#This is if you want to save the table in a prism all front file
+# mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite")
 # 
-# prism$drug_dose <- as.factor(prism$drug_dose)
-
-# 
-# prism$drug_dose
-
-# 
-
+# dbWriteTable(mydb, "allfront", prism, append = T)
+# dbDisconnect(mydb)
 
 
 # Recode ----------------------------
@@ -65,7 +53,7 @@ anova_output <- anova_output[anova_output$numDF > 1, ]
 
 anova_output
 write.csv(anova_output, 
-          file = paste0("J:\\EEG data\\Claudio output files\\for prism\\Updated\\Analysis\\", tbdrug,"_ANOVA.csv"))
+          file = paste0("J:\\EEG data\\Claudio output files\\for prism\\PSD1\\Analysis\\", tbdrug,"_ANOVA.csv"))
 
 
 #Post-hoc part------------------------------
@@ -92,10 +80,10 @@ posthocs <-  map(repmesure, calc_posthocs)
 posthocs <- do.call("rbind", posthocs)
 
 posthocs
-write.csv(anova_output,
-          file = paste0("J:\\EEG data\\Claudio output files\\for prism\\Updated\\Analysis\\", tbdrug,"_posthocs.csv"))
+write.csv(posthocs,
+          file = paste0("J:\\EEG data\\Claudio output files\\for prism\\PSD1\\Analysis\\", tbdrug,"_posthocs.csv"))
 
 
-
-dbListTables(mydb)
+# 
+# dbListTables(mydb)
 

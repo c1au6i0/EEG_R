@@ -9,9 +9,10 @@ imp <- import_ale(choose.dir())
 
 
 # Use this to import from database
-# imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = "methylphenidate")
-
+# 
+# imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite3", tab ='combo_cocaine+3.2WIN35428'  )
 # setwd(choose.dir())
+
 
 
 

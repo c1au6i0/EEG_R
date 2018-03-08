@@ -1,14 +1,12 @@
 #how to work with sqlite https://cran.r-project.org/web/packages/RSQLite/vignettes/RSQLite.html
 
-library(DBI)
-library(RSQLite)
-library(dplyr)
-library(dbplyr)
-library(pragma)
 
-mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite")
+source("J:/EEG data/EEG_R/script_start.R")
+
+mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite3")
 
 dbListTables(mydb)
+
 
 # <- dbGetQuery(mydb, 'SELECT * FROM cocaine')
 
@@ -23,20 +21,16 @@ injection_int <- as.numeric( alleeg$injection_int[1] )*60
 baseline_int <- as.numeric( alleeg$baseline[1] )*60
 
 
-dbWriteTable(mydb, 'methylphenidate', alleeg2)
+dbWriteTable(mydb, 'heroin', alleeg2)
 
 dbWriteTable(mydb, 'allfront_nl', prism)
 
 dbRemoveTable(mydb, "saline3")
 
- prova <- dbGetQuery(mydb, 'SELECT *
-                  FROM allfront_nl')
+dbGetQuery(mydb, 'SELECT DISTINCT drug
+                            FROM allfront
+                            ORDER BY ROWID ASC LIMIT 10')
 
-
-                  WHERE  drug = "cocaine" ')
-
-
-                  ORDER BY ROWID ASC LIMIT 300')
-
+   WHERE  drug = "cocaine" ')
 
 db_list_tables(mydb)

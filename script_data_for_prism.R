@@ -5,9 +5,21 @@
 
 source("J:/EEG data/EEG_R/script_start.R")
 
+tbdrug <-    "methylphenidate"
+
+# What to take ---------------
+# 3 for 60s, 4 for 300s
+
+binsec <- 4
+
+# first interval to take, last interval and interinterval time in min
+int <- seq(10, 60, 10) * 60
+
+int
 
 
-tbdrug <- "methylphenidate"
+
+
 # Use this to import from database
 imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = tbdrug)
 
@@ -65,15 +77,11 @@ fgperc_eeg  <- pblapply(fsperc_eeg, chan_group_mean )
 
 
 #3 for 60 sec, 4 for 300s, 
-forprismg  <- as.data.frame(fgperc_eeg[4])
+forprismg  <- as.data.frame(fgperc_eeg[binsec])
 
-forprisms  <- as.data.frame(fsperc_eeg [4])
+forprisms  <- as.data.frame(fsperc_eeg [binsec])
 
 
-# first interval to take, last interval and interinterval time in min
-int <- seq(10, 60, 10) * 60
-      
-int
 
 
 prism <- forprisms %>% 
@@ -91,13 +99,7 @@ prismg <- forprismg %>%
 
 # setwd("J:\\EEG data\\Claudio output files\\for prism")
 
-write.csv(prismg , file = "J:\\EEG data\\Claudio output files\\for prism\\methylphenidate2_prism.csv")
+write.csv(prismg , file = paste0("J:\\EEG data\\Claudio output files\\for prism\\PSD1\\", tbdrug, "_prism.csv"))
 
-# prova <- prism %>% 
-  # select(UQ(c("subject", "Bands","intervals_sec", "drug_dose", "PSD_perc"))) %>%
-  # spread(subject, PSD_perc)
-
-# fitprova <- aov(PSD_perc~drug_dose +Error(subject/drug_dose),data=prism)
-# summary(fitprova)
 
 

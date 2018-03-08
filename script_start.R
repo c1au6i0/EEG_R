@@ -1,5 +1,4 @@
 
-
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 # Library and user functions ----------------------------------------------
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
@@ -11,12 +10,16 @@ to_load  <- list( "colorspace",
                   "ggplot2",
                   "lazyeval",
                   "magrittr",
+                  "multcomp",
+                  "nlme",
                   "packrat",
                   "pbapply",
                   "pracma",
+                  "purrr",
                   "reticulate",
                   "RSQLite",
                   "scales",
+                  "stringr",
                   "svDialogs",
                   "viridis")
 

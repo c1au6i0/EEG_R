@@ -116,6 +116,8 @@ import_sqltb  <- function( dbp, tab) {
   
   names(out) <- c("alldoses", "alleeg", "baseline_int", "drug", "injection_int")
   
+  dbDisconnect(mydb)
+  
   out
   
   
