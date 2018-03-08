@@ -27,7 +27,15 @@ to_load  <- list( "colorspace",
 lapply(to_load, require, character.only = TRUE)
 
 
-setwd("J:/EEG data/EEG_R")
+
+if (Sys.info()["sysname"] != "Windows" ) {
+  setwd("/Users/NCCU/Documents/EEG_R/") } else {
+  setwd("J:/EEG data/EEG_R")
+}  
+  
+
+
+
 ufunc <- list( "graphing_functions.R",
                "equalizing_factor_functions.R",
                "import_functions.R",
