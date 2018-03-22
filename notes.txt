@@ -1,0 +1,16 @@
+RAT12
+methylphenidate
+
+RAT14
+heroin min4.5 and 94.5
+
+RAT22
+cocaine
+morphine min27 and 89
+modafinil min29 and 149
+
+RAT24
+ketamine min3 and 93
+
+RAT15
+JHW007 min 28 and 118

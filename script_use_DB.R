@@ -3,7 +3,7 @@
 
 source("J:/EEG data/EEG_R/script_start.R")
 
-mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite3")
+mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite")
 
 dbListTables(mydb)
 

@@ -5,7 +5,7 @@
 # library("reticulate")
 # library("pbapply")
 
-source("J:/EEG data/EEG_R/Scripts/start.R")
+source("J:/EEG data/EEG_R/script_start.R")
 # SET Directory to analyze and list of files ---- 
 f_here <- choose.dir()
 
@@ -15,6 +15,7 @@ files <- list.files(include.dirs=FALSE)
 
 #details experiment are in the txt file
 dte <-  files[grepl("RAT.*txt", files)]
+dte2 <- dte
 
 if (length(dte) == 0) message("Error: Info file not found!")
 
@@ -88,5 +89,33 @@ if ( (max(vdd_ch) - min(vdd_ch)) > 0.2 ) {
 } 
 
 
+names(amp_ch) <- amp
 
+#Graph snipet ---------------
+
+front <- amp_ch$`amp-D-012.dat`
+
+mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.PSD1examples")
+dbWriteTable(mydb, dte2, as.data.frame(front))
+
+# min start
+st <- 8
+
+#snipet lenghtn in min
+lgsn <- 0.1
+  
+
+y <- front[ (st*60*2000):(st*60*2000 + lgsn* 60 * 2000)]
+
+x <- seq_along(y)/2000
+
+plot(x, y, type = "l",
+     
+     xlab = "sec",
+     ylab = "microV",
+     ylim = c(-200, 200)
+     )
+
+
+dbDisconnect(mydb)
 
