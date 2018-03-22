@@ -5,9 +5,9 @@
 # library("reticulate")
 # library("pbapply")
 
-<<<<<<< HEAD
+
 source("J:/EEG data/EEG_R/script_start.R")
-=======
+
 # For windows unquote
 # source("J:/EEG data/EEG_R/Scripts/start.R")
 
@@ -15,7 +15,6 @@ source("/Users/NCCU/Documents/EEG_R/script_start.R")
 
 
 
->>>>>>> b18808089257615ed3b8cdb1923ad8aafd11fce6
 # SET Directory to analyze and list of files ---- 
 f_here <- choose.dir()
 
