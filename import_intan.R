@@ -5,9 +5,23 @@
 # library("reticulate")
 # library("pbapply")
 
+<<<<<<< HEAD
 source("J:/EEG data/EEG_R/script_start.R")
+=======
+# For windows unquote
+# source("J:/EEG data/EEG_R/Scripts/start.R")
+
+source("/Users/NCCU/Documents/EEG_R/script_start.R")
+
+
+
+>>>>>>> b18808089257615ed3b8cdb1923ad8aafd11fce6
 # SET Directory to analyze and list of files ---- 
 f_here <- choose.dir()
+
+
+f_here <- "/Volumes/My\ Passport/EEG\ data/RAT12/RAT12_2017-04-17_Cocaine_Cumul_0.1_3.2_0.5_10_10_iv/"
+
 
 setwd(f_here)
 
@@ -78,6 +92,8 @@ aux_ch <- lapply(aux, import_chan, ty = "uint16", conv = 0.0000374) # repeated 4
 
 # amplifier
 amp_ch <- pblapply(amp, import_chan, ty = "int16", conv = 0.195)
+
+names(amp_ch) <- amp
 
 # vdd
 vdd_ch <- unlist(pblapply(vdd, import_chan, ty = "uint16", conv = 0.0000748)) 
