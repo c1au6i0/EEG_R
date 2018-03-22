@@ -5,11 +5,6 @@
 # library("reticulate")
 # library("pbapply")
 
-<<<<<<< HEAD
-source("J:/EEG data/EEG_R/script_start.R")
-=======
-
-source("J:/EEG data/EEG_R/script_start.R")
 
 # For windows unquote
 # source("J:/EEG data/EEG_R/Scripts/start.R")
@@ -17,10 +12,9 @@ source("J:/EEG data/EEG_R/script_start.R")
 source("/Users/NCCU/Documents/EEG_R/script_start.R")
 
 
-
->>>>>>> d7a255fe3d462cda67cbdf97239ce8c6c22afc4e
 # SET Directory to analyze and list of files ---- 
-f_here <- choose.dir()
+f_here <- dlgDir()$res
+
 
 setwd(f_here)
 
@@ -108,8 +102,13 @@ names(amp_ch) <- amp
 
 front <- amp_ch$`amp-D-012.dat`
 
-mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.PSD1examples")
-dbWriteTable(mydb, dte2, as.data.frame(front))
+# mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.PSD1examples")
+# dbWriteTable(mydb, dte2, as.data.frame(front))
+
+# mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/PSD1_examples.sqlite")
+mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG_R/PSD1_examples.sqlite")
+
+dbListTables(mydb)
 
 # min start
 st <- 8
