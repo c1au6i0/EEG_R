@@ -4,6 +4,8 @@
 
 
 source("J:/EEG data/EEG_R/script_start.R")
+source("/Users/NCCU/Documents/EEG_R/script_start.R")
+
 
 tbdrug <-    "methylphenidate"
 
@@ -21,7 +23,8 @@ int
 
 
 # Use this to import from database
-imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = tbdrug)
+# imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = tbdrug)
+imp <-  import_sqltb(dbp = "/Users/NCCU/Documents/EEG_R/PSD1.sqlite", tab = tbdrug)
 
 
 

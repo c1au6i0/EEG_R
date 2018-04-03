@@ -1,9 +1,10 @@
 #how to work with sqlite https://cran.r-project.org/web/packages/RSQLite/vignettes/RSQLite.html
 
 
-source("J:/EEG data/EEG_R/script_start.R")
+# source("J:/EEG data/EEG_R/script_start.R")
+source("/Users/NCCU/Documents/EEG_R/script_start.R")
 
-mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite")
+mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG_R/PSD1.sqlite")
 
 dbListTables(mydb)
 

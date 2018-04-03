@@ -109,9 +109,11 @@ front <- amp_ch$`amp-D-012.dat`
 mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG_R/PSD1_examples.sqlite")
 
 dbListTables(mydb)
+front <-  dbGetQuery(mydb, "SELECT * FROM 'RAT15_2017-08-03_JHW007_Cumul_1_10_0.5_30_30_iv.txt'  ")
 
+front <- front$front
 # min start
-st <- 8
+st <- 114
 
 #snipet lenghtn in min
 lgsn <- 0.1
@@ -129,5 +131,5 @@ plot(x, y, type = "l",
      )
 
 
-dbDisconnect(mydb)
+# dbDisconnect(mydb)
 
