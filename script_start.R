@@ -30,7 +30,7 @@ lapply(to_load, require, character.only = TRUE)
 
 
 if (Sys.info()["sysname"] != "Windows" ) {
-  setwd("/Users/NCCU/Documents/EEG_R/") } else {
+  setwd("/Users/NCCU/Documents/EEG/EEG_R/") } else {
   setwd("J:/EEG data/EEG_R")
 }  
   

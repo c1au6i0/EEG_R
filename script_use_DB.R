@@ -2,9 +2,9 @@
 
 
 # source("J:/EEG data/EEG_R/script_start.R")
-source("/Users/NCCU/Documents/EEG_R/script_start.R")
+source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R")
 
-mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG_R/PSD1.sqlite")
+mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG/Databases_EEG/PSD3.sqlite")
 
 dbListTables(mydb)
 
@@ -22,7 +22,7 @@ injection_int <- as.numeric( alleeg$injection_int[1] )*60
 baseline_int <- as.numeric( alleeg$baseline[1] )*60
 
 
-dbWriteTable(mydb, 'heroin', alleeg2)
+dbWriteTable(mydb, 'cocaine+1WIN35428', alleeg2)
 
 dbWriteTable(mydb, 'allfront_nl', prism)
 

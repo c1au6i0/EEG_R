@@ -2,10 +2,18 @@
 #
 
 # load packages and scripts
-source("J:/EEG data/EEG_R/script_start.R")
+if (Sys.info()["sysname"] != "Windows" ) {
+  source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R") } else {
+  source("J:/EEG data/EEG_R/script_start.R")
+}  
+
+
+
+
+
 
 # Use this to import those stupid cvs
-imp <- import_ale(choose.dir())
+imp <- import_ale(dlgDir()$res)
 
 
 # Use this to import from database
