@@ -27,11 +27,14 @@ imp <- import_ale(dlgDir()$res)
 list2env(imp, .GlobalEnv )
 
 # alleeg$route <- "iv"
+
 alleeg$subject <- droplevels(alleeg$subject)
 
+by(alleeg, alleeg$subject, function(x) max(x[, "time_sec"]))
 
 
-alleeg2 <-  equal_sub(alleeg, interv = 300)
+
+alleeg2 <-  equal_sub(alleeg, interv = 300))
 
 
 alleeg2 <- na.omit(alleeg2)

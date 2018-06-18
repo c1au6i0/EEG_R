@@ -1,0 +1,7 @@
+{
+    "installOptions" : {
+        "installDependencies" : true,
+        "installFromRepository" : true,
+        "libraryPath" : "J:/EEG data/EEG_R/packrat/lib/x86_64-w64-mingw32/3.4.2"
+    }
+}

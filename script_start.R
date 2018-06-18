@@ -22,6 +22,7 @@ to_load  <- list( "colorspace",
                   "scales",
                   "stringr",
                   "svDialogs",
+                  "tidyverse",
                   "viridis")
 
 

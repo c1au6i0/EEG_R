@@ -15,7 +15,7 @@ import_ale <- function ( fold ) {
   file <- file[!file %in% nread]
   
 
-  prova <- pblapply(file, function (x) read.csv( x , header = TRUE, sep = "," ))
+  prova <- pblapply(file, function (x) read_csv( x ))
   
 
   alleeg  <-  Reduce(function(...) merge(..., all=T),   prova )

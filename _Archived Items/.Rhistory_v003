@@ -1,0 +1,512 @@
+ylim = c(-200, 200)
+)
+st <- 114
+#snipet lenghtn in min
+lgsn <- 0.1
+y <- front[ (st*60*2000):(st*60*2000 + lgsn* 60 * 2000)]
+x <- seq_along(y)/2000
+plot(x, y, type = "l",
+xlab = "sec",
+ylab = "microV",
+ylim = c(-200, 200)
+)
+47.455 - 43.967
+144.058-170.904
+47.427-3.488
+35.247+26.486
+175.805-109.387
+72.243-66.418
+source("/Users/NCCU/Documents/EEG_R/script_start.R")
+tbdrug <-    "methylphenidate"
+binsec <- 4
+# first interval to take, last interval and interinterval time in min
+int <- seq(10, 60, 10) * 60
+int
+# Use this to import from database
+imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = tbdrug)
+list2env(imp, .GlobalEnv )
+# setwd( "J:\\EEG data\\Claudio output files\\for prism")
+alleeg2 <- na.omit(alleeg)
+# Means##################################################
+alleeg2 <-  equal_sub(alleeg, interv = 300)
+nl_alleeg2 <- no_lateral(dat = alleeg2)
+freq <-   c(4,8,13,30,50)
+# Create intervals of bands and time on list of dataframe depending on freq
+fsmeans_eeg <- mapply(mean_bands, list(alleeg2, alleeg2, nl_alleeg2, nl_alleeg2),
+rep(c(60, 300),2),
+rep(list(freq), 4),
+SIMPLIFY = FALSE
+)
+#Percent baseline by subject
+fsperc_eeg  <- lapply(fsmeans_eeg[1:2], percent_baseline,
+groupby = c("Bands", "channel", "subject"),
+basel = "drug_dose", variab = "PSD_abs",
+namen = "PSD_perc",
+oper = "PSD_abs/baseline*100" )
+# Percent no laterality by single channel
+fsperc_eeg_nlat <- lapply(fsperc_eeg ,  no_lateral)
+fsperc_eeg_nlat <- lapply(fsperc_eeg_nlat, chan_group_mean,
+groupby = c("Bands", "intervals_sec", "channel", "drug_dose", "drug", "date", "subject")
+)
+fsperc_eeg <- append(fsperc_eeg, fsperc_eeg_nlat)
+fgperc_eeg  <- pblapply(fsperc_eeg, chan_group_mean )
+#########################################################
+#3 for 60 sec, 4 for 300s,
+forprismg  <- as.data.frame(fgperc_eeg[binsec])
+forprisms  <- as.data.frame(fsperc_eeg [binsec])
+prism <- forprisms %>%
+dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int & Bands ==  "Beta")
+prismg <- forprismg %>%
+dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int & Bands ==  "Beta")
+plot(prismg$intervals_sec, prismg$PSD_perc, type = "p")
+prismg <- forprismg %>%
+dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int)
+binsec <- 4
+# first interval to take, last interval and interinterval time in min
+int <- seq(10, 60, 10) * 60
+int
+# Use this to import from database
+imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = tbdrug)
+# Use this to import from database
+imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/PSD1.sqlite", tab = tbdrug)
+tbdrug <-    "methylphenidate"
+# source("J:/EEG data/EEG_R/script_start.R")
+source("/Users/NCCU/Documents/EEG_R/script_start.R")
+tbdrug <-    "methylphenidate"
+binsec <- 4
+# first interval to take, last interval and interinterval time in min
+int <- seq(10, 60, 10) * 60
+int
+imp <-  import_sqltb(dbp = "/Users/NCCU/Documents/EEG_R/script_start.R/PSD1.sqlite", tab = tbdrug)
+imp <-  import_sqltb(dbp = "/Users/NCCU/Documents/EEG_R/PSD1.sqlite", tab = tbdrug)
+# mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite")
+mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG_R/PSD1.sqlite")
+imp <-  import_sqltb(dbp = "/Users/NCCU/Documents/EEG_R/PSD1.sqlite", tab = tbdrug)
+list2env(imp, .GlobalEnv )
+imp <-  import_sqltb(dbp = "/Users/NCCU/Documents/EEG_R/PSD1.sqlite", tab = tbdrug)
+# Use this to import from database
+imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/PSD3.sqlite", tab = tbdrug)
+# mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite")
+mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG_R/PSD3.sqlite")
+mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG_R/PSD1.sqlite")
+# source("J:/EEG data/EEG_R/script_start.R")
+source("/Users/NCCU/Documents/EEG_R/script_start.R")
+mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG_R/PSD1.sqlite")
+tbdrug <-    "methylphenidate"
+# What to take ---------------
+# 3 for 60s, 4 for 300s
+binsec <- 4
+# first interval to take, last interval and interinterval time in min
+int <- seq(10, 60, 10) * 60
+int
+# Use this to import from database
+# imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = tbdrug)
+imp <-  import_sqltb(dbp = "/Users/NCCU/Documents/EEG_R/PSD1.sqlite", tab = tbdrug)
+list2env(imp, .GlobalEnv )
+# setwd( "J:\\EEG data\\Claudio output files\\for prism")
+alleeg2 <- na.omit(alleeg)
+# Means##################################################
+alleeg2 <-  equal_sub(alleeg, interv = 300)
+nl_alleeg2 <- no_lateral(dat = alleeg2)
+freq <-   c(4,8,13,30,50)
+# Create intervals of bands and time on list of dataframe depending on freq
+fsmeans_eeg <- mapply(mean_bands, list(alleeg2, alleeg2, nl_alleeg2, nl_alleeg2),
+rep(c(60, 300),2),
+rep(list(freq), 4),
+SIMPLIFY = FALSE
+)
+#Percent baseline by subject
+fsperc_eeg  <- lapply(fsmeans_eeg[1:2], percent_baseline,
+groupby = c("Bands", "channel", "subject"),
+basel = "drug_dose", variab = "PSD_abs",
+namen = "PSD_perc",
+oper = "PSD_abs/baseline*100" )
+# Percent no laterality by single channel
+fsperc_eeg_nlat <- lapply(fsperc_eeg ,  no_lateral)
+fsperc_eeg_nlat <- lapply(fsperc_eeg_nlat, chan_group_mean,
+groupby = c("Bands", "intervals_sec", "channel", "drug_dose", "drug", "date", "subject")
+)
+fsperc_eeg <- append(fsperc_eeg, fsperc_eeg_nlat)
+fgperc_eeg  <- pblapply(fsperc_eeg, chan_group_mean )
+#########################################################
+#3 for 60 sec, 4 for 300s,
+forprismg  <- as.data.frame(fgperc_eeg[binsec])
+forprisms  <- as.data.frame(fsperc_eeg [binsec])
+prism <- forprisms %>%
+dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int & Bands ==  "Beta")
+prismg <- forprismg %>%
+dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int & Bands ==  "Beta")
+plot(prismg$intervals_sec, prismg$PSD_perc, type = "p")
+prismg <- forprismg %>%
+dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int)
+# setwd("J:\\EEG data\\Claudio output files\\for prism")
+names(prismg)
+packrat::set_opts(vcs.ignore.src = TRUE)
+library("rChoiceDialogs", lib.loc="~/Documents/EEG_R/packrat/lib/x86_64-apple-darwin15.6.0/3.4.3")
+detach("package:rChoiceDialogs", unload=TRUE)
+detach("package:rJava", unload=TRUE)
+library("svDialogs", lib.loc="~/Documents/EEG_R/packrat/lib/x86_64-apple-darwin15.6.0/3.4.3")
+read.csv(dlgOpen()$res, sep = " ")
+prova <- read.csv(dlgOpen()$res, sep = "")
+View(prova)
+prova <- read.csv(dlgOpen()$res, sep = "", skip = 1)
+glimpse(prova)
+source('~/Documents/EEG_R/script_start.R')
+glimpse(prova)
+View(prova)
+source('~/Documents/EEG/EEG_R/script_start.R')
+if (Sys.info()["sysname"] != "Windows" ) {
+setwd("/Users/NCCU/Documents/EEG/EEG_R/script_start.R") } else {
+source("J:/EEG data/EEG_R/script_start.R")
+}
+if (Sys.info()["sysname"] != "Windows" ) {
+source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R") } else {
+source("J:/EEG data/EEG_R/script_start.R")
+}
+if (Sys.info()["sysname"] != "Windows" ) {
+source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R") } else {
+source("J:/EEG data/EEG_R/script_start.R")
+}
+if (Sys.info()["sysname"] != "Windows" ) {
+source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R") } else {
+source("J:/EEG data/EEG_R/script_start.R")
+}
+source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R")
+getwd()
+# load packages and scripts
+if (Sys.info()["sysname"] != "Windows" ) {
+source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R") } else {
+source("J:/EEG data/EEG_R/script_start.R")
+}
+# load packages and scripts
+if (Sys.info()["sysname"] != "Windows" ) {
+source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R") } else {
+source("J:/EEG data/EEG_R/script_start.R")
+}
+# Use this to import those stupid cvs
+imp <- import_ale(choose.dir())
+# Use this to import those stupid cvs
+imp <- import_ale(dlg.dir()$res)
+# Use this to import those stupid cvs
+imp <- import_ale(dlgDir()$res)
+list2env(imp, .GlobalEnv )
+glimpse(alleeg)
+# alleeg$route <- "iv"
+alleeg$subject <- droplevels(alleeg$subject)
+alleeg2 <-  equal_sub(alleeg, interv = 300)
+alleeg2 <- na.omit(alleeg2)
+subt <- paste0("doses = ", paste(round(alldoses, 3), collapse = ", "),
+" mg/kg given every ", injection_int/60, " min" )
+seqbreaks <- seq(0, max(alleeg$time_sec/60), by = injection_int/60)
+by(alleeg2, alleeg2$subject, fheatmap, subt = subt, seqbreaks = seqbreaks)
+unique(alleeg2$subject)
+# alleeg2 <- remcorr2(alleeg2)
+nl_alleeg2 <- no_lateral(dat = alleeg2)
+freq <-   c(4,8,13,30,50)
+# Create intervals of bands and time on list of dataframe depending on freq
+fsmeans_eeg <- mapply(mean_bands, list(alleeg2, alleeg2, nl_alleeg2, nl_alleeg2),
+rep(c(60, 300),2),
+rep(list(freq), 4),
+SIMPLIFY = FALSE
+)
+#Percent baseline by subject
+fsperc_eeg  <- lapply(fsmeans_eeg[1:2], percent_baseline,
+groupby = c("Bands", "channel", "subject"),
+basel = "drug_dose", variab = "PSD_abs",
+namen = "PSD_perc",
+oper = "PSD_abs/baseline*100" )
+# Percent no laterality by single channel
+fsperc_eeg_nlat <- lapply(fsperc_eeg ,  no_lateral)
+fsperc_eeg_nlat <- lapply(fsperc_eeg_nlat, chan_group_mean,
+groupby = c("Bands", "intervals_sec", "channel", "drug_dose", "drug", "date", "subject")
+)
+fsperc_eeg <- append(fsperc_eeg, fsperc_eeg_nlat)
+# plots allsubj abs
+lapply(fsperc_eeg, point_graph2_s,
+yaes = "PSD_abs",
+lerr= "PSD_abs_SER",
+sp= "A",
+subt2 = subt,
+sel = "Bands",
+seqbreaks = seqbreaks
+)
+# names(as.data.frame(fgperc_eeg[1]))
+# plots allsubj perc
+lapply(fsperc_eeg, point_graph2_s,
+yaes = "PSD_perc",
+perc = "yes",
+sp= "A",
+subt2 = subt,
+sel = "Bands",
+seqbreaks = seqbreaks
+)
+fgperc_eeg  <- pblapply(fsperc_eeg, chan_group_mean )
+# plots all group mean perc
+lapply(fgperc_eeg, point_graph2,
+yaes = "PSD_perc",
+lerr= "PSD_perc_SER",
+perc = "yes",
+sp= "A",
+subt2 = subt,
+sel = "Bands",
+seqbreaks = seqbreaks
+)
+# plots all group mean abs
+lapply(fgperc_eeg, point_graph2,
+yaes = "PSD_abs",
+lerr= "PSD_abs_SER",
+sp= "A",
+subt2 = subt,
+sel = "Bands",
+seqbreaks = seqbreaks
+)
+# plots all group mean jitter
+lapply(fsperc_eeg, jitterplot,
+yaes = "PSD_perc",
+perc = "yes",
+sp= "A",
+subt2 = subt,
+sel = "Bands",
+seqbreaks = seqbreaks
+)
+# plots all group mean jitter
+lapply(fsperc_eeg, jitterplot,
+yaes = "PSD_abs",
+perc = "no",
+sp= "A",
+subt2 = subt,
+sel = "Bands",
+seqbreaks = seqbreaks
+)
+# source("J:/EEG data/EEG_R/script_start.R")
+source("/Users/NCCU/Documents/EEG_R/script_start.R")
+# source("J:/EEG data/EEG_R/script_start.R")
+source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R")
+mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG/Databases_EEG/PSD3.sqlite")
+dbListTables(mydb)
+dbWriteTable(mydb, 'cocaine+1WIN35428', alleeg2)
+dbDisconnect(mydb)
+# source("J:/EEG data/EEG_R/script_start.R")
+source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R")
+mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG/Databases_EEG/PSD3.sqlite")
+dbListTables(mydb)
+# load packages and scripts
+if (Sys.info()["sysname"] != "Windows" ) {
+source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R") } else {
+source("J:/EEG data/EEG_R/script_start.R")
+}
+all <- read.csv(dlgOpen()$res,
+sep = ",", stringsAsFactors = F, row.names = 1 )
+row.names(all)
+# Standard --------------------------------------------------------------------------------------
+tokeep <- 1:5
+all
+tokeep <- 1:5
+standardcomb <- all[tokeep,]
+standardcomb["axmax",] <- 110
+standardcomb["axmin",] <- 70
+# pty = 32 is for no point.
+c_cocaine <- rgb(225, 193 ,0, max = 255)
+c_jhwcombo <- 'black'
+radarchart2(standardcomb,
+#Grid and axis
+axistype = 1,
+cglcol="grey",
+cglty=1,
+axislabcol="black",
+caxislabels= seq(70,110,10),
+cglwd= 1,
+calcex = 1.2,
+#labels
+vlcex=1.5,
+# #Polygons
+# pcol=colors_border,
+# pfcol=colors_border ,
+# plwd=4 ,
+# plty=1,
+#symbols and lines
+plwd = c(3, 4, 4),
+plty = c(5, 1, 1),
+pty = c(31, 16, 5),
+cex = 3,
+pcol = c("black", c_cocaine, c_jhwcombo )
+)
+source('~/Documents/EEG/EEG_R/radarchart2.R')
+tokeep <- 1:5
+standardcomb <- all[tokeep,]
+standardcomb["axmax",] <- 110
+standardcomb["axmin",] <- 70
+# pty = 32 is for no point.
+c_cocaine <- rgb(225, 193 ,0, max = 255)
+c_jhwcombo <- 'black'
+radarchart2(standardcomb,
+#Grid and axis
+axistype = 1,
+cglcol="grey",
+cglty=1,
+axislabcol="black",
+caxislabels= seq(70,110,10),
+cglwd= 1,
+calcex = 1.2,
+#labels
+vlcex=1.5,
+# #Polygons
+# pcol=colors_border,
+# pfcol=colors_border ,
+# plwd=4 ,
+# plty=1,
+#symbols and lines
+plwd = c(3, 4, 4),
+plty = c(5, 1, 1),
+pty = c(31, 16, 5),
+cex = 3,
+pcol = c("black", c_cocaine, c_jhwcombo )
+)
+order_col <- c("Theta", "Delta", "Gamma", "Beta", "Alpha")
+all <- all[, order_col]
+# standardcomb --------------------------------------------------------------------------------------
+tokeep <- 1:5
+standardcomb <- all[tokeep,]
+standardcomb["axmax",] <- 110
+standardcomb["axmin",] <- 70
+c_cocaine <- rgb(225, 193 ,0, max = 255)
+c_jhwcombo <- 'black'
+radarchart2(standardcomb,
+#Grid and axis
+axistype = 1,
+cglcol="grey",
+cglty=1,
+axislabcol="black",
+caxislabels= seq(70,110,10),
+cglwd= 1,
+calcex = 1.2,
+#labels
+vlcex=1.5,
+# #Polygons
+# pcol=colors_border,
+# pfcol=colors_border ,
+# plwd=4 ,
+# plty=1,
+#symbols and lines
+plwd = c(3, 4, 4),
+plty = c(5, 1, 1),
+pty = c(31, 16, 5),
+cex = 3,
+pcol = c("black", c_cocaine, c_jhwcombo )
+)
+n <- 5
+seg <-  4
+centerzero <- FALSE
+theta <- seq(90, 450, length = n + 1) * pi/180
+theta <- theta[1:n]
+xx <- cos(theta)
+yy <- sin(theta)
+CGap <- ifelse(centerzero, 0, 1)
+#error bar cocaine
+data <- standardcomb
+errdown <- standardcomb["cocaine", ] - all["err_cocaine",]
+errup <-  standardcomb["cocaine", ] + all["err_cocaine",]
+scaledwn <- CGap/(seg + CGap) + (errdown - data[2, ])/(data[1, ] - data[2, ]) * seg/(seg + CGap)
+scaleup  <- CGap/(seg + CGap) + (errup - data[2, ])/(data[1, ] - data[2, ]) * seg/(seg + CGap)
+segments( as.double(xx * scaleup),
+as.double(yy * scaleup),
+as.double(xx * scaledwn),
+as.double(yy * scaledwn),
+col = c_cocaine,
+lwd = 4
+)
+#error bar methylphenidate
+data <- standardcomb
+errdown <- standardcomb["cocaine+10JHW007", ] - all["cocaine+10JHW007",]
+errup <-  standardcomb["cocaine+10JHW007", ] + all["cocaine+10JHW007",]
+scaledwn <- CGap/(seg + CGap) + (errdown - data[2, ])/(data[1, ] - data[2, ]) * seg/(seg + CGap)
+scaleup  <- CGap/(seg + CGap) + (errup - data[2, ])/(data[1, ] - data[2, ]) * seg/(seg + CGap)
+segments( as.double(xx * scaleup),
+as.double(yy * scaleup),
+as.double(xx * scaledwn),
+as.double(yy * scaledwn),
+col = c_methylphenidate,
+lwd = 4
+)
+data <- standardcomb
+errdown <- standardcomb["cocaine+10JHW007", ] - all["cocaine+10JHW007",]
+errup <-  standardcomb["cocaine+10JHW007", ] + all["cocaine+10JHW007",]
+scaledwn <- CGap/(seg + CGap) + (errdown - data[2, ])/(data[1, ] - data[2, ]) * seg/(seg + CGap)
+scaleup  <- CGap/(seg + CGap) + (errup - data[2, ])/(data[1, ] - data[2, ]) * seg/(seg + CGap)
+segments( as.double(xx * scaleup),
+as.double(yy * scaleup),
+as.double(xx * scaledwn),
+as.double(yy * scaledwn),
+col = cc_jhwcombo,
+lwd = 4
+)
+data <- standardcomb
+errdown <- standardcomb["cocaine+10JHW007", ] - all["cocaine+10JHW007",]
+errup <-  standardcomb["cocaine+10JHW007", ] + all["cocaine+10JHW007",]
+scaledwn <- CGap/(seg + CGap) + (errdown - data[2, ])/(data[1, ] - data[2, ]) * seg/(seg + CGap)
+scaleup  <- CGap/(seg + CGap) + (errup - data[2, ])/(data[1, ] - data[2, ]) * seg/(seg + CGap)
+segments( as.double(xx * scaleup),
+as.double(yy * scaleup),
+as.double(xx * scaledwn),
+as.double(yy * scaledwn),
+col = c_jhwcombo,
+lwd = 4
+)
+radarchart2(standardcomb,
+#Grid and axis
+axistype = 1,
+cglcol="grey",
+cglty=1,
+axislabcol="black",
+caxislabels= seq(70,110,10),
+cglwd= 1,
+calcex = 1.2,
+#labels
+vlcex=1.5,
+# #Polygons
+# pcol=colors_border,
+# pfcol=colors_border ,
+# plwd=4 ,
+# plty=1,
+#symbols and lines
+plwd = c(3, 4, 4),
+plty = c(5, 1, 1),
+pty = c(31, 16, 5),
+cex = 3,
+pcol = c("black", c_cocaine, c_jhwcombo )
+)
+# this to scale the coordinates
+n <- 5
+seg <-  4
+centerzero <- FALSE
+theta <- seq(90, 450, length = n + 1) * pi/180
+theta <- theta[1:n]
+xx <- cos(theta)
+yy <- sin(theta)
+CGap <- ifelse(centerzero, 0, 1)
+#error bar cocaine
+data <- standardcomb
+errdown <- standardcomb["cocaine", ] - all["err_cocaine",]
+errup <-  standardcomb["cocaine", ] + all["err_cocaine",]
+scaledwn <- CGap/(seg + CGap) + (errdown - data[2, ])/(data[1, ] - data[2, ]) * seg/(seg + CGap)
+scaleup  <- CGap/(seg + CGap) + (errup - data[2, ])/(data[1, ] - data[2, ]) * seg/(seg + CGap)
+segments( as.double(xx * scaleup),
+as.double(yy * scaleup),
+as.double(xx * scaledwn),
+as.double(yy * scaledwn),
+col = c_cocaine,
+lwd = 4
+)
+#error bar methylphenidate
+data <- standardcomb
+errdown <- standardcomb["cocaine+10JHW007", ] - all["err_cocaine+10JHW007",]
+errup <-  standardcomb["cocaine+10JHW007", ] + all["err_cocaine+10JHW007",]
+scaledwn <- CGap/(seg + CGap) + (errdown - data[2, ])/(data[1, ] - data[2, ]) * seg/(seg + CGap)
+scaleup  <- CGap/(seg + CGap) + (errup - data[2, ])/(data[1, ] - data[2, ]) * seg/(seg + CGap)
+segments( as.double(xx * scaleup),
+as.double(yy * scaleup),
+as.double(xx * scaledwn),
+as.double(yy * scaledwn),
+col = c_jhwcombo,
+lwd = 4
+)

@@ -1,25 +1,25 @@
 # load packages and scripts
-source("J:/EEG data/EEG_R/script_start.R")
+# source("J:/EEG data/EEG_R/script_start.R")
 
-setwd(choose.dir())
+setwd(dlgDir()$res)
 dirs <- basename(list.dirs())
 file <- list.files(include.dirs=FALSE)
 file <- file[!file %in% dirs]
 
-nread <- file[grepl("*pdf|*lnk|*txt|Doses.csv|RData", file)]
+nread <- file[grepl("*pdf|*lnk|*txt|Doses.csv|RData|*png", file)]
 
 file <- file[!file %in% nread]
 
 
 # list of files to import
-RAT <- pblapply(file, function (x) read.csv( x , header = TRUE, sep = "," ))
+RAT <- pblapply(file, function (x) read_csv( x ))
 
 names(RAT) <- LETTERS[1: length(RAT)]
 
 # max(RAT_A$Time)
 
 # starting times
-stl <- c("180301_150957", "180301_153608")
+stl <- c("180611_135043", "180611_143217")
 
 # trasform in format Posixcl
 st_time <- lapply(stl, function (x) strptime(x, format = "%y%m%d_%H%M%S"))
