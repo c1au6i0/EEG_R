@@ -1,5 +1,14 @@
+<<<<<<< HEAD
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 packrat/lib*/
+=======
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+packrat/lib*/
+packrat/src/
+>>>>>>> 91c25638d0d8ba66ac1d314af2c666b49f434269
