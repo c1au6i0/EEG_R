@@ -19,7 +19,7 @@ names(RAT) <- LETTERS[1: length(RAT)]
 # max(RAT_A$Time)
 
 # starting times
-stl <- c("180611_135043", "180611_143217")
+stl <- c("180614_151546", "180614_162738")
 
 # trasform in format Posixcl
 st_time <- lapply(stl, function (x) strptime(x, format = "%y%m%d_%H%M%S"))
@@ -68,7 +68,8 @@ RAT_int <- rbind(RAT$A, RAT_int)
 
 tail(RAT$A$Time)
 head(RAT$B$Time)
-head(RAT_int$Time)
+tail(RAT_int$Time)/60
+tail(RAT$B$Time)/60
 plot(unique(RAT_int$Time), seq_along(unique(RAT_int$Time)), type = "l")
 
 write.csv (RAT_int, file = "RAT_int.csv", row.names = F)
