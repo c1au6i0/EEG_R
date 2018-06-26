@@ -180,6 +180,12 @@ Source: CRAN
 Version: 1.11.4
 Hash: d8736a5fe41e5ebef191c43f5e22652f
 
+Package: dbplot
+Source: CRAN
+Version: 0.3.0
+Hash: 2c8bcd9310e7171b7b9aa150e76914eb
+Requires: dplyr, ggplot2, purrr, rlang
+
 Package: dbplyr
 Source: CRAN
 Version: 1.2.1

@@ -7,8 +7,8 @@ mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.sqlite3")
 
 
 db_list_tables(mydb)
-alone <-tbl(mydb, "heroin")
-combo <-  tbl(mydb, "heroin+10VK440")
+alone <- as_data_frame(tbl(mydb, "Cocaine" ))
+combo <-  as_data_frame(tbl(mydb, "Cocaine+1WIN35428"))
 
 # sort(unique(alone$subject)) == sort(unique(combo$subject))
 
@@ -21,14 +21,14 @@ baselinecoc <-  filter(alone,  D_interval  == "baseline")
 
 combo$time_sec <-  combo$time_sec + 10*60
 
-combo$D_interval[combo$D_interval == "baseline"] <- "10_JHW007"
-allcombo <- rbind(combo, baselinecoc)
+combo$D_interval[combo$D_interval == "baseline"] <- "1_WIN35428"
+allcombo <- bind_rows(combo, baselinecoc)
 
 
-dbWriteTable(mydb, "combo_cocaine_JHW007", allcombo)
+dbWriteTable(mydb, "combo_Cocaine_1WIN35428", allcombo)
 
 
 dbDisconnect(mydb)
-
+# setequal
 
 

@@ -1,34 +1,10 @@
-alleeg <- read.csv2(file.choose(), header = TRUE, sep = ",")
+alleeg <- read_csv(dlg_open()$res)
+
+alleeg$Time <- alleeg$Time - 60
 
 
-names(alleeg)
+alleeg2 <- filter(alleeg, Time >= 0)
 
-head(alleeg)
-alleeg <- subset(alleeg, select = -X)
-
-
-
-
-
-firstint <- filter(alleeg, time_sec < 5220)
-
-
-lastint <-  filter(alleeg, time_sec  >  5580)
-
-lastint$time_sec <- lastint$time_sec -180
-
-extra3  <- filter(alleeg, time_sec  >  5400 & time_sec  <= 5580  )
-
-extra3$time_sec <-  extra3$time_sec -180
-
-flextra <- c( head(extra3$time_sec,1), tail(extra3$time_sec,1) )
-
-
-flfirst <- c( head(firstint$time_sec,1), tail(firstint$time_sec,1) )
-
-
-fllast <- c( head(lastint$time_sec,1), tail(lastint$time_sec,1) )
-
-
-corr_alleeg <- rbind(corr_alleeg, lastint)
-
+distinct(alleeg2$Time)
+max(unique(alleeg2$Time))/60
+write_csv(alleeg2, "RAT43f_intcorr.csv")

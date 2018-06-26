@@ -7,13 +7,13 @@ mean_bands <- function(dat, interv, freq) {
   
   
   if (missing(freq)) freq <- c(4,8,13,30,50)
-  
+
   interv <- as.numeric(interv)
  
   # Intervals used for the mean  -> mean_intervals (+1 so it does not start from 0)
   
-  dat[, "M_interval"] <- as.numeric(findInterval(dat[,"time_sec"], 
-                                                 as.numeric(seq(interv, max(dat[,"time_sec"]), interv), left.open = TRUE)) ) + 1
+  dat[, "M_interval"] <- as.numeric(findInterval(as.numeric(unlist(dat[,"time_sec"])), 
+                             as.numeric(seq(interv, max(dat[,"time_sec"]), interv), left.open = TRUE)) ) + 1
   
   
   dat[, "M_interval"] <-  dat[, "M_interval"] * interv
@@ -22,7 +22,7 @@ mean_bands <- function(dat, interv, freq) {
   blab <- c("Delta", "Theta", "Alpha", "Beta", "Gamma")
   freq <- as.numeric(c(0,freq))
   
-  dat[, "Bands"] <- cut(dat[,"frequency_eeg"],  freq, labels = blab, include.lowest = FALSE)
+  dat[, "Bands"] <- cut(as.numeric(unlist(dat[,"frequency_eeg"])),  freq, labels = blab, include.lowest = FALSE)
    
   sel <- as.symbol("Bands")
 

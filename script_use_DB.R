@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #how to work with sqlite https://cran.r-project.org/web/packages/RSQLite/vignettes/RSQLite.html
 
 
@@ -14,7 +14,7 @@ dbListTables(mydb)
 
 toadd <- dbGetQuery(mydb, 'SELECT * FROM RAT16_24_JHW007')
 
-alleeg  <- tbl(mydb, "ketamine") 
+alleeg  <- tbl(mydb, "cocaine") 
 
 
 alldoses <- as.numeric(unique(alleeg$D_interval[!alleeg$D_interval == "baseline"]))
@@ -23,7 +23,7 @@ injection_int <- as.numeric( alleeg$injection_int[1] )*60
 baseline_int <- as.numeric( alleeg$baseline[1] )*60
 
 
-dbWriteTable(mydb, 'Cocaine+1WIN35428', alleeg) 
+dbWriteTable(mydb, 'cocaine', alleeg) 
 
 
 dbWriteTable(mydb, 'allfront_nl', prism)
@@ -38,9 +38,11 @@ dbGetQuery(mydb, 'SELECT DISTINCT drug
 
 db_list_tables(mydb)
 dbGetQuery(mydb, 'SELECT DISTINCT subject
-                  FROM heroin
-                  ORDER BY ROWID ASC LIMIT 10')
-=======
+                  FROM "Cocaine+1WIN35428")
+
+
+#                  ORDER BY ROWID ASC LIMIT 10')
+
 #how to work with sqlite https://cran.r-project.org/web/packages/RSQLite/vignettes/RSQLite.html
 
 
@@ -65,7 +67,7 @@ injection_int <- as.numeric( alleeg$injection_int[1] )*60
 baseline_int <- as.numeric( alleeg$baseline[1] )*60
 
 
-dbWriteTable(mydb, 'cocaine+1WIN35428', alleeg2)
+dbWriteTable(mydb, "Cocaine+1WIN35428", alleeg)
 
 dbWriteTable(mydb, 'allfront_nl', prism)
 
@@ -74,8 +76,6 @@ dbRemoveTable(mydb, "saline3")
 dbGetQuery(mydb, 'SELECT DISTINCT drug
                             FROM allfront
                             ORDER BY ROWID ASC LIMIT 10')
+# WHERE  drug = "cocaine" ')
 
-   WHERE  drug = "cocaine" ')
-
-db_list_tables(mydb)
->>>>>>> 91c25638d0d8ba66ac1d314af2c666b49f434269
+q <- "ALTER TABLE cocaine RENAME TO Cocaine"

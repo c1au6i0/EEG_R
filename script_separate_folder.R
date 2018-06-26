@@ -15,16 +15,19 @@ setwd(data_dir)
 copyin_folder<- function (x) {
   let <- paste0("-", x, "-")
   files <- list.files(include.dirs=FALSE)
-  to_copy<- c(files[str_detect(files, ".txt")], 
+  to_copy <- c(files[str_detect(files, ".txt")], 
               files[str_detect(files, ".rhd")],
-              files[str_detect(files, ".ods")], 
+              files[str_detect(files, ".ods")],
+              files[str_detect(files, ".xls")],
               files[str_detect(files, let)])
   dir.create(x)
   file.copy(to_copy, paste0(data_dir, paste0("/", x)))
-  
+  file.remove(to_copy)
 } 
 
 map(c("A", "D"), copyin_folder)
 
-copyin_folder("A")
+copyin_folder("D")
+
+
        
