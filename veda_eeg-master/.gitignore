@@ -1,0 +1,18 @@
+<<<<<<< HEAD
+Icon[^\w]
+=======
+>>>>>>> 63eee965220b792d6c001e9c91ef713cf8947aab
+*.pyc
+*.DS_Store
+*.sh
+*.*~
+.*/
+<<<<<<< HEAD
+.project*
+.pydev*
+.dropbox*
+mk_dir*
+build*
+*.pyc
+=======
+>>>>>>> 63eee965220b792d6c001e9c91ef713cf8947aab

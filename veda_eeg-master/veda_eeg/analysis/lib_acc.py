@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 '''
 Created on Apr 17, 2017
 
 @author: scaglionea
 '''
 
+from veda_eeg import import_session
 
 import numpy as np
 import scipy.signal as spsi
@@ -103,35 +103,91 @@ def find_peaks(x, threshold=0, what='max', return_extrema=False):
     return np.where(non_same)[0][extrema]
 
 
-def filter_acc(x, gpass=0.1, gstop=50., sf=2000.):
+def filter_acc(x, fp=.5, fs=0.01, gpass=0.1, gstop=50., sf=2000.):
+    '''
+    filters the incoming signal. By default it uses an highpass filter with pass
+    frequency of fp=0.5 Hz and stop frequency fs=0.01 Hz. The gain in the stop
+    and pass band is defined by ws and wp. Sampling frequency sf is assumed to
+    be 2000Hz
 
-    wp = 0.5 / (sf / 2.0)
-    ws = 0.01 / (sf / 2.0)
+    :param x: original signal
+    :type x: <np.array>
+    :param fp: pass frequency
+    :type fp: float
+    :param fs: stop frequency
+    :type fs: float
+    :param gpass: pass band
+    :type gpass: float
+    :param gstop: stop band
+    :type gstop: float
+    :param sf: sampling frequency
+    :type sf: float
+    '''
+
+    wp = fp / (sf / 2.0)
+    ws = fs / (sf / 2.0)
 
     b, a = spsi.iirdesign(wp, ws, gpass, gstop)
 
     return spsi.filtfilt(b, a, x)
 
 
-def movement_index(x, sensitivity=1, sf=2000, threshold=None):
+def movement_index(x, sensitivity=100, sf=2000, threshold=None, coeff=200, width=60):
+    '''
+    Estimate animal movement based on the modulus of the accelerometer.
 
-    # x = filter_acc(x)
-    if threshold is None:
-        threshold = sensitivity * np.median(abs(x)) / 0.6745
-        print('threshold set automatically to {}:'.format(threshold))
+    :param x: accelerometer modulus
+    :type x:
+    :param sensitivity:
+    :type sensitivity:
+    :param sf:
+    :type sf:
+    :param threshold:
+    :type threshold:
+    :param coeff:
+    :type coeff:
+    :param width:
+    :type width:
+    '''
 
-    peaks, values = find_peaks(x, threshold, return_extrema=True)
-    tmp = np.full(peaks.max() + 1, 0.)
-    tmp[peaks] = values
-    peaks = tmp
+    # bandpassing the modulus from 0.2Hz to 45Hz. Usable bandwith is from 0.2 to 45
+    # the rest if filtered out
+    x = filter_acc(x, 0.2, 0.01)
+    x = filter_acc(x, 45, 50)
 
-    kernel = spsi.hanning(int(0.5 * 2000), True)
-    kernel = kernel / sum(kernel)
+    x = x**2 * sensitivity
 
-    return spsi.convolve(peaks, kernel, 'same')
+    return x
 
-    
+    #     if threshold is None:
+    #         threshold = sensitivity * np.median(abs(x)) / 0.6745
+    #         print('threshold set automatically to {}:'.format(threshold))
+    #
+    #     peaks, values = find_peaks(x, threshold, return_extrema=True)
+    #     tmp = np.full(peaks.max() + 1, 0.)
+    #     tmp[peaks] = values
+    #     peaks = tmp
+    #
+    #     kernel = spsi.hanning(int(width * sf), True)
+    #     kernel = kernel / sum(kernel) * coeff
+    #
+    #     return spsi.convolve(peaks, kernel, 'same')
+
+
+def estimate_movement_index_from_path(path):
+
+    x = get_acc_data(path)
+    x = movement_index(x['mod'])
+
+    return x
+
+
+def mean_mi(x):
+
+    mi = movement_index(x)
+    mi_c_a = spsi.convolve(mi, np.ones(60 * 2000) / (60 * 2000.))
+    return mi_c_a[0:mi.size]
+
 
 if __name__ == '__main__':
     pass
-

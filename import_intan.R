@@ -1,15 +1,12 @@
 # import data intan files, a file for each channel 
 # http://www.intantech.com/files/Intan_RHD2000_data_file_formats.pdf
 
-# 
-# library("reticulate")
-# library("pbapply")
+# load packages and scripts
+if (Sys.info()["sysname"] != "Windows" ) {
+  source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R") } else {
+    source("J:/EEG data/EEG_R/script_start.R")
+  }  
 
-
-# For windows unquote
-# source("J:/EEG data/EEG_R/Scripts/start.R")
-
-source("/Users/NCCU/Documents/EEG_R/script_start.R")
 
 
 # SET Directory to analyze and list of files ---- 
@@ -96,40 +93,57 @@ if ( (max(vdd_ch) - min(vdd_ch)) > 0.2 ) {
 } 
 
 
-names(amp_ch) <- amp
+lib_acc <- import_from_path("lib_acc", path = "/Users/NCCU/Documents/EEG/EEG_R/", convert = TRUE)
 
-#Graph snipet ---------------
-
-front <- amp_ch$`amp-D-012.dat`
-
-# mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.PSD1examples")
-# dbWriteTable(mydb, dte2, as.data.frame(front))
-
-# mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/PSD1_examples.sqlite")
-mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG_R/PSD1_examples.sqlite")
-
-dbListTables(mydb)
-front <-  dbGetQuery(mydb, "SELECT * FROM 'RAT15_2017-08-03_JHW007_Cumul_1_10_0.5_30_30_iv.txt'  ")
-
-front <- front$front
-# min start
-st <- 114
-
-#snipet lenghtn in min
-lgsn <- 0.1
-  
-
-y <- front[ (st*60*2000):(st*60*2000 + lgsn* 60 * 2000)]
-
-x <- seq_along(y)/2000
-
-plot(x, y, type = "l",
-     
-     xlab = "sec",
-     ylab = "microV",
-     ylim = c(-200, 200)
-     )
+aux_ch_mod <- sqrt(aux_ch[[1]]^2 + aux_ch[[2]]^2 + aux_ch[[3]]^2)
+prova <- lib_acc$filter_acc(np$asarray(aux_ch_mod), 0.5/1000, 0.01/1000)
+prova <- lib_acc$movement_index(np$asarray(prova))
 
 
-# dbDisconnect(mydb)
 
+plot(y = prova[1:100000], seq_along(prova[1:100000]), type = "l")
+
+
+prova <- np$asarray(aux_ch_mod)
+
+
+
+#-----------------------------------------------------------------------------------------------------------------
+
+# names(amp_ch) <- amp
+
+# #Graph snipet ---------------
+# 
+# front <- amp_ch$`amp-D-012.dat`
+# 
+# # mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/my-db.PSD1examples")
+# # dbWriteTable(mydb, dte2, as.data.frame(front))
+# 
+# # mydb <- dbConnect(RSQLite::SQLite(), "J:/EEG data/EEG_R/PSD1_examples.sqlite")
+# mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG_R/PSD1_examples.sqlite")
+# 
+# dbListTables(mydb)
+# front <-  dbGetQuery(mydb, "SELECT * FROM 'RAT15_2017-08-03_JHW007_Cumul_1_10_0.5_30_30_iv.txt'  ")
+# 
+# front <- front$front
+# # min start
+# st <- 114
+# 
+# #snipet lenghtn in min
+# lgsn <- 0.1
+#   
+# 
+# y <- front[ (st*60*2000):(st*60*2000 + lgsn* 60 * 2000)]
+# 
+# x <- seq_along(y)/2000
+# 
+# plot(x, y, type = "l",
+#      
+#      xlab = "sec",
+#      ylab = "microV",
+#      ylim = c(-200, 200)
+#      )
+# 
+# 
+# # dbDisconnect(mydb)
+# 

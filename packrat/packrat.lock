@@ -239,6 +239,12 @@ Source: CRAN
 Version: 1.5
 Hash: 258cf79a8dbeedf1c981cdb53837d2af
 
+Package: formattable
+Source: CRAN
+Version: 0.2.0.1
+Hash: 64836860c4666eadc229c6e47fdd2261
+Requires: htmltools, htmlwidgets, knitr, rmarkdown
+
 Package: gdata
 Source: CRAN
 Version: 2.18.0
@@ -413,10 +419,22 @@ Source: CRAN
 Version: 1.0.1
 Hash: e04b8ed7b05c1f75aa81c65a086b1d0c
 
+Package: packagefinder
+Source: CRAN
+Version: 0.0.7
+Hash: 4953437689f1a9ccadd2211d2b8df164
+Requires: formattable, httr, jsonlite, pander, stringr
+
 Package: packrat
 Source: CRAN
 Version: 0.4.9-2
 Hash: 47dbd4e04dcd01da02a2021203205cb1
+
+Package: pander
+Source: CRAN
+Version: 0.6.2
+Hash: 3e2309cc7ae497e58a5a5882475d06bf
+Requires: Rcpp, digest
 
 Package: pbapply
 Source: CRAN

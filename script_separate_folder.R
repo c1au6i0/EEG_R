@@ -19,15 +19,15 @@ copyin_folder<- function (x) {
               files[str_detect(files, ".rhd")],
               files[str_detect(files, ".ods")],
               files[str_detect(files, ".xls")],
+              files[str_detect(files, "time")],
               files[str_detect(files, let)])
   dir.create(x)
   file.copy(to_copy, paste0(data_dir, paste0("/", x)))
-  file.remove(to_copy)
 } 
 
 map(c("A", "D"), copyin_folder)
+rm(list.files(include.dirs=FALSE))
 
-copyin_folder("D")
 
 
        

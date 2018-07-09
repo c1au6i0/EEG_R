@@ -15,10 +15,11 @@ import_ale <- function ( fold ) {
   file <- file[!file %in% nread]
   
 
-  prova <- pblapply(file, function (x) read_csv( x ))
-  
+  # prova <- map_dfr(file, function (x) read_csv( x ))
 
-  alleeg  <-  Reduce(function(...) merge(..., all=T),   prova )
+  alleeg  <- map_dfr(file, function (x) read_csv( x ))
+
+  # alleeg  <-  Reduce(function(...) merge(..., all=T),   prova )
   
   # alleeg$route <- "iv"
   
@@ -80,7 +81,7 @@ import_ale <- function ( fold ) {
   
   # Dosing Intervals
   alleeg[, "D_interval"] <- cut( alleeg$time_sec, injection_time, labels =  c("baseline", alldoses),  include.lowest = FALSE )
-  alleeg$D_interval[is.na(alleeg$D_interva)] <- max(alldoses)
+  alleeg$D_interval[is.na(alleeg$D_interval)] <- max(alldoses)
   
   
   out <- list(alldoses, alleeg, baseline_int, drug, injection_int)
