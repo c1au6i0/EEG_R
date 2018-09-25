@@ -3,17 +3,19 @@
 # Prism dose-effect curves
 
 
-source("J:/EEG data/EEG_R/script_start.R")
-source("/Users/NCCU/Documents/EEG_R/script_start.R")
+
+source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R")
 
 
-tbdrug <-    "methylphenidate"
+
+tbdrug <-    "combo_cocaine_JHW007"  
 
 # What to take ---------------
 # 3 for 60s, 4 for 300s
 
 binsec <- 4
 
+# For combo you need to add an extra interval
 # first interval to take, last interval and interinterval time in min
 int <- seq(10, 60, 10) * 60
 
@@ -24,18 +26,26 @@ int
 
 # Use this to import from database
 # imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = tbdrug)
-imp <-  import_sqltb(dbp = "/Users/NCCU/Documents/EEG_R/PSD1.sqlite", tab = tbdrug)
+imp <-  import_sqltb(dbp =  "/Users/NCCU/Documents/EEG/Databases_EEG/PSD3.sqlite", tab = tbdrug)
 
 
 
 list2env(imp, .GlobalEnv )
 
+alleeg <- alleeg %>% 
+      filter(subject != "RAT34")
+
+unique(alleeg$subject)
 
 # setwd( "J:\\EEG data\\Claudio output files\\for prism")
 alleeg2 <- na.omit(alleeg)
 
+# alleeg2$drug <- "Cocaine+1WIN35428"
+# drug <- "Cocaine+1WIN35428"
+# unique(alleeg2$drug)
+
 # Means##################################################
-alleeg2 <-  equal_sub(alleeg, interv = 300)
+alleeg2 <-  equal_sub(alleeg2, interv = 300)
 
 
 nl_alleeg2 <- no_lateral(dat = alleeg2) 
@@ -91,18 +101,26 @@ prism <- forprisms %>%
           dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int & Bands ==  "Beta")
 
 
-prismg <- forprismg %>% 
-  dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int & Bands ==  "Beta")
 
 
-plot(prismg$intervals_sec, prismg$PSD_perc, type = "p")
+forprisms %>%
+  filter(channel == "EEG_FRONT" & intervals_sec %in% int) %>% 
+  ggplot(aes(intervals_sec, PSD_perc, col = subject)) +
+  geom_point() +
+  stat_summary(fun.data = mean_sdl, geom = "line", col = "red") +
+  facet_grid(~Bands)
+
+
+
 
 prismg <- forprismg %>% 
   dplyr::filter(channel == "EEG_FRONT" & intervals_sec %in% int)
 
 # setwd("J:\\EEG data\\Claudio output files\\for prism")
 
-write.csv(prismg , file = paste0("J:\\EEG data\\Claudio output files\\for prism\\PSD1\\", tbdrug, "_prism.csv"))
+setwd(dlg_dir()$res)
+write_csv(prismg, "cocaine_JHW007_no34.csv")
+stat
 
 
 

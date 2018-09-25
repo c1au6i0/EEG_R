@@ -1,4 +1,5 @@
 # import data intan files, a file for each channel 
+# and those analysis of movement
 # http://www.intantech.com/files/Intan_RHD2000_data_file_formats.pdf
 
 # load packages and scripts
@@ -9,7 +10,7 @@ if (Sys.info()["sysname"] != "Windows" ) {
 
 
 
-# SET Directory to analyze and list of files ---- 
+# SET Directory to analyze and list of files ----------
 f_here <- dlgDir()$res
 
 
@@ -69,46 +70,97 @@ names(headers) <- c("magic_n","ver1", "ver2", "sampr", "DSP", "DSP_cutoff",
 
 # header["magic_n"] <- py_to_r(np$fromfile(info_py, dtype=np$int32, count = as.integer(1)))
 
-headers
 
-# Import timestamp, aux, amp, vdd ----
+
+# Import timestamp, aux, amp, vdd ---------------------------------
 # http://www.intantech.com/files/Intan_RHD2000_data_file_formats.pdf
+
+# info sessions 
+
+info_txt <- str_split(read_lines(file = str_subset(files, "^RAT.*txt"), n_max = 2), "_")
+
+info_session <- as.list(unlist(info_txt[[1]]))
+names(info_session ) <- as.list(unlist(info_txt[[2]]))
 
 #time.dat
 tst <- unlist(import_chan( chan = "time.dat", ty = "int32", conv = 1/as.numeric(headers["sampr"])))
 
 # aux
-aux_ch <- lapply(aux, import_chan, ty = "uint16", conv = 0.0000374) # repeated 4 at the time
+# aux_ch <- lapply(aux, import_chan, ty = "uint16", conv = 0.0000374) # repeated 4 at the time
 
-# amplifier
-amp_ch <- pblapply(amp, import_chan, ty = "int16", conv = 0.195)
+# amplifier-------------
+# amp_ch <- pblapply(amp, import_chan, ty = "int16", conv = 0.195)
 
 # vdd
 vdd_ch <- unlist(pblapply(vdd, import_chan, ty = "uint16", conv = 0.0000748)) 
 
 
+# Check if there is a drop in power.
 if ( (max(vdd_ch) - min(vdd_ch)) > 0.2 ) {
   warning("Data indicate that there was a drop in the power!")
   
 } 
 
 
+# Movement Index analysis -----------
+aux_ch_mod <- sqrt(aux_ch[[1]]^2 + aux_ch[[2]]^2 + aux_ch[[3]]^2)
+
 lib_acc <- import_from_path("lib_acc", path = "/Users/NCCU/Documents/EEG/EEG_R/", convert = TRUE)
 
-aux_ch_mod <- sqrt(aux_ch[[1]]^2 + aux_ch[[2]]^2 + aux_ch[[3]]^2)
-prova <- lib_acc$filter_acc(np$asarray(aux_ch_mod), 0.5/1000, 0.01/1000)
-prova <- lib_acc$movement_index(np$asarray(prova))
+
+aux_filt <- lib_acc$filter_acc(np$asarray(aux_ch_mod))
+movix <- lib_acc$movement_index(np$asarray(aux_filt))
+
+int <- 2 * 10 * 60 *2000
+
+toplot <- movix[0:int]
+
+toplot <- movix[int:int+int]
 
 
 
-plot(y = prova[1:100000], seq_along(prova[1:100000]), type = "l")
+#lets create the dataframe including info in the headers and in the info_session file
+mov_df <- data_frame("time" = seq_along(movix)/ headers$sampr,
+                    "x" = movix
+                    )
 
 
-prova <- np$asarray(aux_ch_mod)
+# The PSD analysis is done for timewindows of 10 seconds. This those the same for mov_df
+
+mov_df[, "time_bin"] <- as.numeric(as.character(cut(as.vector(unlist(mov_df$time)),
+             as.vector(seq(0, tail(mov_df$time,1), 10)), 
+             labels = seq(10, tail(mov_df$time,1), 10),
+             include.lowest = FALSE)))
+
+mov_df10 <- mov_df %>% 
+  group_by(time_bin) %>% 
+  summarize(mov_ix = mean(x)) %>% 
+  mutate(                    
+     "subject" = info_session$SUBJECT,
+     "date" = as_date(info_session$DATE),
+      time = time_bin,
+     "dose_rounte" = info_session$ROUTE,
+     "dose_interval" = info_session$DOSEINTERVAL,
+     "drug" = info_session$DRUG,
+     "experiment" = info_session$EXPERIMENT,
+     "session_name" =  paste( unlist(info_txt[[1]]), collapse='_'),
+     "d0" = info_session$D0,
+     "d1" = info_session$D1,
+     "time_interval" = info_session$TIMEINTERVAL,
+     "baseline_time" = info_session$BASELINE
+)
+
+mov_df10 <- na.omit(mov_df10)
+
+mov_df10 %>% 
+  ggplot(aes(time_bin, mov_ix)) +
+  geom_line(aes(group = 1)) +
+  scale_x_continuous(breaks= seq(0, tail(mov_df10$time_bin,1), by = 600)) +
+  geom_smooth()
+    
 
 
-
-#-----------------------------------------------------------------------------------------------------------------
+# mydb <- dbConnect(RSQLite::SQLite(), "/Users/NCCU/Documents/EEG_R/PSD1_examples.sqlite")
 
 # names(amp_ch) <- amp
 

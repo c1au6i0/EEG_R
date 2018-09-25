@@ -19,27 +19,31 @@ imp <- import_ale(dlgDir()$res)
 
 # Use this to import from database
 # 
-# imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite3", tab ='combo_cocaine+3.2WIN35428'  )
+# imp <-  import_sqltb(dbp =  "/Users/NCCU/Documents/EEG/Databases_EEG/PSD3b.sqlite", tab ='heroin'  )
 # setwd(choose.dir())
 
 
 
 
-list2env(imp, .GlobalEnv )
+list2env(imp, .GlobalEnv)
 
 
 # alleeg$route <- "iv"
 
 # alleeg$subject <- droplevels(alleeg$subject)
 
-by(alleeg, alleeg$subject, function(x) max(x[, "time_sec"]))
+by(alleeg, alleeg$subject, function(x) max(x[, "time_sec"]))/60
+
+glimpse(alleeg)
 
 
+# alleeg2 <-  equal_sub(alleeg, interv = 300)
 
-alleeg2 <-  equal_sub(alleeg, interv = 300)
 
+alleeg2 <- na.omit(alleeg)
 
-alleeg2 <- na.omit(alleeg2)
+alleeg2 <- alleeg2 %>% 
+  filter(time_sec < 151 * 60)
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 # Heatmaps ----------------------------------------------------------------
@@ -93,7 +97,7 @@ fsperc_eeg_nlat <- lapply(fsperc_eeg_nlat, chan_group_mean,
 
 fsperc_eeg <- append(fsperc_eeg, fsperc_eeg_nlat)
 
-# plots allsubj abs
+# plots allsubj abs----------
 lapply(fsperc_eeg, point_graph2_s,
        yaes = "PSD_abs",
        lerr= "PSD_abs_SER",
@@ -106,7 +110,7 @@ lapply(fsperc_eeg, point_graph2_s,
 # names(as.data.frame(fgperc_eeg[1]))
 
 
-# plots allsubj perc
+# plots allsubj perc-------
 lapply(fsperc_eeg, point_graph2_s,
        yaes = "PSD_perc",
        perc = "yes",
