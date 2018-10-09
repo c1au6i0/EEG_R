@@ -1,5 +1,4 @@
-
-# Comands to create graphs...
+# This script is used for previewing the data collected
 #
 
 # load packages and scripts

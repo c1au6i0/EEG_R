@@ -7,12 +7,12 @@
 source("/Users/NCCU/Documents/EEG/EEG_R/script_start.R")
 
 
-
+# name of the table to import
 tbdrug <-    "combo_cocaine_JHW007"  
 
-# What to take ---------------
-# 3 for 60s, 4 for 300s
 
+# Choose bin:
+# 3 for 60s, 4 for 300s
 binsec <- 4
 
 # For combo you need to add an extra interval
@@ -24,8 +24,7 @@ int
 
 
 
-# Use this to import from database
-# imp <-  import_sqltb(dbp = "J:/EEG data/EEG_R/my-db.sqlite", tab = tbdrug)
+# Use this to import from database: Change location of database if needed
 imp <-  import_sqltb(dbp =  "/Users/NCCU/Documents/EEG/Databases_EEG/PSD3.sqlite", tab = tbdrug)
 
 
@@ -118,9 +117,11 @@ prismg <- forprismg %>%
 
 # setwd("J:\\EEG data\\Claudio output files\\for prism")
 
+#Where to save it
 setwd(dlg_dir()$res)
+
+# Change name
 write_csv(prismg, "cocaine_JHW007_no34.csv")
-stat
 
 
 
