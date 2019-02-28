@@ -1,6 +1,0 @@
-dill
-matplotlib
-numpy
-pandas
-scipy
-setuptools
